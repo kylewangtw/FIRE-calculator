@@ -1,7 +1,7 @@
 {
   "name": "fire-calculator",
   "version": "0.1.0",
-  "homepage": "https://kylewang.github.io/FIRE-calculator",
+  "homepage": "https://kylewangtw.github.io/FIRE-calculator",
   "private": true,
   "dependencies": {
     "@craco/craco": "^7.1.0",
