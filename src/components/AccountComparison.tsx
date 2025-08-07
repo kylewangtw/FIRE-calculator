@@ -68,8 +68,8 @@ const AccountComparison: React.FC<AccountComparisonProps> = ({ result }) => {
                 'text-gray-700'
               }`}>
                 {account.name}
-                {isBest && <span className="ml-2 text-xs bg-green-200 px-2 py-1 rounded">最佳</span>}
-                {isWorst && <span className="ml-2 text-xs bg-red-200 px-2 py-1 rounded">最差</span>}
+                {isBest && <span className="ml-2 text-xs bg-green-200 px-2 py-1 rounded">{t.best}</span>}
+                {isWorst && <span className="ml-2 text-xs bg-red-200 px-2 py-1 rounded">{t.worst}</span>}
               </h4>
               <p className={`text-2xl font-bold ${
                 isBest ? 'text-green-900' : 
@@ -91,7 +91,7 @@ const AccountComparison: React.FC<AccountComparisonProps> = ({ result }) => {
                 </div>
               </div>
               <p className="text-xs text-gray-600 mt-1">
-                差異: {formatCurrency(account.required - minRequired)}
+                {t.difference}: {formatCurrency(account.required - minRequired)}
               </p>
             </div>
           );

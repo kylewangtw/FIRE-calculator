@@ -89,9 +89,7 @@ export interface Translations {
   
   // Calculate Button
   calculateResults: string;
-  startMonteCarlo: string;
   calculating: string;
-  monteCarloCalculating: string;
   calculatingDescription: string;
   
   // v1.3 Advanced Tax Features
@@ -108,14 +106,21 @@ export interface Translations {
   exemptions: string;
   exemptionsTooltip: string;
   personalExemption: string;
+  personalExemptionTooltip: string;
   standardDeduction: string;
+  standardDeductionTooltip: string;
   dividendExemption: string;
+  dividendExemptionTooltip: string;
   capitalGainsExemption: string;
+  capitalGainsExemptionTooltip: string;
   withholdingTax: string;
   withholdingTaxTooltip: string;
   dividendWithholding: string;
+  dividendWithholdingTooltip: string;
   foreignWithholding: string;
+  foreignWithholdingTooltip: string;
   applyToForeign: string;
+  applyToForeignTooltip: string;
   
   // v1.4 Comparison and Reports
   comparisonAndReports: string;
@@ -125,18 +130,133 @@ export interface Translations {
   assetGrowthChart: string;
   taxComparisonChart: string;
   
-  // v1.5 Monte Carlo
-  monteCarlo: string;
-  monteCarloTooltip: string;
-  volatility: string;
-  volatilityTooltip: string;
-  simulations: string;
-  simulationsTooltip: string;
-  bankruptcyProbability: string;
-  successRate: string;
-  worstCase: string;
-  bestCase: string;
+  // v2.0 Real Estate Module
+  realEstateModule: string;
+  useRealEstate: string;
+  useRealEstateTooltip: string;
+  propertyValue: string;
+  propertyValueTooltip: string;
+  annualRent: string;
+  annualRentTooltip: string;
+  vacancyRate: string;
+  vacancyRateTooltip: string;
+  maintenanceRate: string;
+  maintenanceRateTooltip: string;
+  propertyGrowthRate: string;
+  propertyGrowthRateTooltip: string;
+  propertyVolatility: string;
+  propertyVolatilityTooltip: string;
+  mortgageAmount: string;
+  mortgageAmountTooltip: string;
+  mortgageRate: string;
+  mortgageRateTooltip: string;
+  mortgageYears: string;
+  mortgageYearsTooltip: string;
+  rentTaxRate: string;
+  rentTaxRateTooltip: string;
+  
+  // v2.0 Risk Heatmap
+  riskHeatmap: string;
+  riskHeatmapSettings: string;
+  useRiskHeatmap: string;
+  useRiskHeatmapTooltip: string;
+  stockAllocation: string;
+  stockAllocationTooltip: string;
+  bondAllocation: string;
+  bondAllocationTooltip: string;
+  stockReturn: string;
+  stockReturnTooltip: string;
+  stockVolatility: string;
+  stockVolatilityTooltip: string;
+  bondReturn: string;
+  bondReturnTooltip: string;
+  bondVolatility: string;
+  bondVolatilityTooltip: string;
+  stockBondCorrelation: string;
+  stockBondCorrelationTooltip: string;
+  stockPropertyCorrelation: string;
+  stockPropertyCorrelationTooltip: string;
+  bondPropertyCorrelation: string;
+  bondPropertyCorrelationTooltip: string;
+  withdrawalRate: string;
+  withdrawalRateTooltip: string;
+  bankruptcyRate: string;
+  bankruptcyRateTooltip: string;
+  withRealEstate: string;
+  withoutRealEstate: string;
+  realEstateImpact: string;
+  realEstateImpactTooltip: string;
+
   medianCase: string;
+  
+  // Risk Heatmap specific translations
+  riskHeatmapTitle: string;
+  riskHeatmapDescription: string;
+  stockPercentage: string;
+  withdrawalRatePercentage: string;
+  bankruptcyRatePercentage: string;
+  riskLevelLow: string;
+  riskLevelMedium: string;
+  riskLevelHigh: string;
+  riskLevelVeryHigh: string;
+  riskHeatmapInstructions: string;
+  riskHeatmapInstructions1: string;
+  riskHeatmapInstructions2: string;
+  riskHeatmapInstructions3: string;
+  riskHeatmapInstructions4: string;
+  
+  // Real Estate Module specific translations
+  realEstateInstructions: string;
+  realEstateInstructions1: string;
+  realEstateInstructions2: string;
+  realEstateInstructions3: string;
+  
+  // Account Comparison specific translations
+  best: string;
+  worst: string;
+  difference: string;
+  
+  // Results specific translations
+  detailedInformation: string;
+  
+  // Language names
+  chinese: string;
+  english: string;
+  
+  // Risk level descriptions
+  riskLevelDescription: string;
+  
+  // Chart axis labels
+  xAxis: string;
+  yAxis: string;
+  
+  // Monte Carlo Simulation
+  monteCarloSimulation: string;
+  simulationYears: string;
+  simulationYearsTooltip: string;
+  simulationPaths: string;
+  simulationPathsTooltip: string;
+  criticalWithdrawalRate: string;
+  computationTime: string;
+  pathsUsed: string;
+  p50EndValue: string;
+  bankruptcyRateDataTable: string;
+  bankruptcyRateHeatmap: string;
+  simulationInProgress: string;
+  startSimulation: string;
+  lowRisk: string;
+  mediumRisk: string;
+  highRisk: string;
+  veryHighRisk: string;
+  greenLowBankruptcy: string;
+  redHighBankruptcy: string;
+  yAxisWithdrawalRate: string;
+  xAxisStockAllocation: string;
+  stockAllocationLabel: string;
+  withdrawalRateLabel: string;
+  bankruptcyRateLabel: string;
+  propertyReturn: string;
+  propertyReturnTooltip: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -229,9 +349,7 @@ export const translations: Record<Language, Translations> = {
     
     // Calculate Button
     calculateResults: '計算結果',
-    startMonteCarlo: '開始蒙地卡羅模擬',
     calculating: '計算中...',
-    monteCarloCalculating: '蒙地卡羅模擬計算中...',
     calculatingDescription: '請稍候，系統正在進行複雜的計算。',
     
     // v1.3 Advanced Tax Features
@@ -248,14 +366,21 @@ export const translations: Record<Language, Translations> = {
     exemptions: '扣除額',
     exemptionsTooltip: '考慮個人所得稅的標準扣除額、個人免稅額、股息免稅額、資本利得免稅額等。這些扣除額會減少應稅所得，降低實際稅負。標準扣除額和個人免稅額是基本扣除，股息和資本利得免稅額是額外優惠。',
     personalExemption: '個人免稅額',
+    personalExemptionTooltip: '個人所得稅的標準扣除額，用於減少應稅所得。',
     standardDeduction: '標準扣除額',
+    standardDeductionTooltip: '個人所得稅的標準扣除額，用於減少應稅所得。',
     dividendExemption: '股息免稅額',
+    dividendExemptionTooltip: '股息收入的免稅額，用於減少應稅所得。',
     capitalGainsExemption: '資本利得免稅額',
+    capitalGainsExemptionTooltip: '資本利得收入的免稅額，用於減少應稅所得。',
     withholdingTax: '扣繳稅',
     withholdingTaxTooltip: '考慮股息扣繳稅、外國扣繳稅等。股息扣繳稅是投資標的發放股息時預先扣繳的稅款，外國扣繳稅是投資海外標的時當地政府扣繳的稅款。這些稅款會減少實際收到的收入。',
     dividendWithholding: '股息扣繳稅',
+    dividendWithholdingTooltip: '股息扣繳稅是投資標的發放股息時預先扣繳的稅款。',
     foreignWithholding: '外國扣繳稅',
+    foreignWithholdingTooltip: '外國扣繳稅是投資海外標的時當地政府扣繳的稅款。',
     applyToForeign: '適用於外國收入',
+    applyToForeignTooltip: '選擇此選項表示該收入來自於外國，可能需要考慮外國扣繳稅。',
     
     // v1.4 Comparison and Reports
     comparisonAndReports: '比較與報表',
@@ -265,18 +390,131 @@ export const translations: Record<Language, Translations> = {
     assetGrowthChart: '資產成長圖',
     taxComparisonChart: '稅務比較圖',
     
-    // v1.5 Monte Carlo
-    monteCarlo: '蒙地卡羅模擬',
-    monteCarloTooltip: '進行蒙地卡羅模擬，評估退休計劃的風險與成功率。蒙地卡羅模擬會進行數千次隨機模擬，考慮投資報酬的波動性，計算在不同市場情況下退休計劃的成功機率。這比傳統的固定報酬率計算更真實。',
-    volatility: '波動率',
-    volatilityTooltip: '投資組合的預期波動率，表示年度報酬率的標準差。較高的波動率表示報酬變化較大，風險較高。一般股票型基金波動率約 15-20%，債券型基金約 5-10%。波動率越高，破產風險越高。',
-    simulations: '模擬次數',
-    simulationsTooltip: '蒙地卡羅模擬的次數，次數越多結果越精確但計算時間越長。建議設定 1000-10000 次。1000 次約需 1-3 秒，10000 次約需 5-15 秒。',
-    bankruptcyProbability: '破產機率',
-    successRate: '成功率',
-    worstCase: '最差情況',
-    bestCase: '最佳情況',
+    // v2.0 Real Estate Module
+    realEstateModule: '房產模組',
+    useRealEstate: '使用房產模組',
+    useRealEstateTooltip: '啟用房產模組，考慮租金收入、空置率、維護費、房貸等因素對退休計劃的影響。房產可以作為額外的收入來源，但也會增加維護成本。',
+    propertyValue: '房產市價 (元)',
+    propertyValueTooltip: '房產的當前市場價值，用於計算房產的投資報酬和維護費用。',
+    annualRent: '年租金 (元)',
+    annualRentTooltip: '房產的年度租金收入，扣除空置率後為實際收入。',
+    vacancyRate: '空置率 (%)',
+    vacancyRateTooltip: '房產的年度空置率，表示無法出租的時間比例。空置期間沒有租金收入，但仍需支付維護費和房貸。',
+    maintenanceRate: '維護費率 (%)',
+    maintenanceRateTooltip: '房產年度維護費用佔房產價值的百分比，包括管理費、保險費、維修費等。',
+    propertyGrowthRate: '房價成長率 (%)',
+    propertyGrowthRateTooltip: '房產價值的年度成長率，用於計算房產的資本增值。',
+    propertyVolatility: '房價波動率 (%)',
+    propertyVolatilityTooltip: '房產價值的年度波動率，用於風險分析。',
+    mortgageAmount: '房貸本金 (元)',
+    mortgageAmountTooltip: '房貸的剩餘本金，用於計算每月房貸付款。',
+    mortgageRate: '房貸利率 (%)',
+    mortgageRateTooltip: '房貸的年度利率，用於計算每月房貸付款。',
+    mortgageYears: '房貸年期',
+    mortgageYearsTooltip: '房貸的剩餘年期，用於計算每月房貸付款。',
+    rentTaxRate: '租金稅率 (%)',
+    rentTaxRateTooltip: '租金收入的稅率，用於計算稅後租金收入。',
+    
+    // v2.0 Risk Heatmap
+    riskHeatmap: '風險熱圖',
+    riskHeatmapSettings: '風險熱圖設定',
+    useRiskHeatmap: '使用風險熱圖',
+    useRiskHeatmapTooltip: '啟用風險熱圖，顯示不同提領率和資產配置下的破產機率。這可以幫助找到最適合的提領策略。',
+    stockAllocation: '股票配置比例 (%)',
+    stockAllocationTooltip: '投資組合中股票的配置比例，影響整體報酬率和風險。',
+    bondAllocation: '債券配置比例 (%)',
+    bondAllocationTooltip: '投資組合中債券的配置比例，影響整體報酬率和風險。',
+    stockReturn: '股票期望報酬率 (%)',
+    stockReturnTooltip: '股票的年度期望報酬率，包括股息和價格成長。',
+    stockVolatility: '股票波動率 (%)',
+    stockVolatilityTooltip: '股票的年度波動率，表示報酬的變異性。',
+    bondReturn: '債券期望報酬率 (%)',
+    bondReturnTooltip: '債券的年度期望報酬率，包括利息和價格變動。',
+    bondVolatility: '債券波動率 (%)',
+    bondVolatilityTooltip: '債券的年度波動率，通常比股票低。',
+    stockBondCorrelation: '股債相關係數',
+    stockBondCorrelationTooltip: '股票和債券報酬的相關係數，影響投資組合的分散效果。',
+    stockPropertyCorrelation: '股房相關係數',
+    stockPropertyCorrelationTooltip: '股票和房產報酬的相關係數，影響投資組合的分散效果。',
+    bondPropertyCorrelation: '債房相關係數',
+    bondPropertyCorrelationTooltip: '債券和房產報酬的相關係數，影響投資組合的分散效果。',
+    withdrawalRate: '提領率 (%)',
+    withdrawalRateTooltip: '年度提領金額佔投資組合的百分比。',
+    bankruptcyRate: '破產機率 (%)',
+    bankruptcyRateTooltip: '在特定提領率和資產配置下，投資組合耗盡的機率。',
+    withRealEstate: '含房產',
+    withoutRealEstate: '無房產',
+    realEstateImpact: '房產影響',
+    realEstateImpactTooltip: '房產對破產風險的影響，可以作為額外收入來源或增加維護成本。',
+
     medianCase: '中位數情況',
+    
+    // Risk Heatmap specific translations
+    riskHeatmapTitle: '風險熱圖',
+    riskHeatmapDescription: '顯示不同提領率和資產配置下的破產機率。',
+    stockPercentage: '股票配置比例',
+    withdrawalRatePercentage: '提領率',
+    bankruptcyRatePercentage: '破產機率',
+    riskLevelLow: '低風險',
+    riskLevelMedium: '中風險',
+    riskLevelHigh: '高風險',
+    riskLevelVeryHigh: '極高風險',
+    riskHeatmapInstructions: '請調整以下參數以查看風險熱圖：',
+    riskHeatmapInstructions1: '1. 調整「提領率」滑桿，觀察不同提領率下的破產機率。',
+    riskHeatmapInstructions2: '2. 調整「股票配置比例」滑桿，觀察不同股票配置下的破產機率。',
+    riskHeatmapInstructions3: '3. 調整「債券配置比例」滑桿，觀察不同債券配置下的破產機率。',
+    riskHeatmapInstructions4: '4. 調整「房產配置比例」滑桿，觀察不同房產配置下的破產機率。',
+    
+    // Real Estate Module specific translations
+    realEstateInstructions: '請調整以下參數以查看房產模組的影響：',
+    realEstateInstructions1: '1. 調整「房產市價」滑桿，觀察房產價值變化對提領計算的影響。',
+    realEstateInstructions2: '2. 調整「年租金」滑桿，觀察租金收入變化對提領計算的影響。',
+    realEstateInstructions3: '3. 調整「空置率」滑桿，觀察空置率變化對提領計算的影響。',
+    
+    // Account Comparison specific translations
+    best: '最佳',
+    worst: '最差',
+    difference: '差異',
+    
+    // Language names
+    chinese: '中文',
+    english: 'English',
+    
+    // Risk level descriptions
+    riskLevelDescription: '低風險：綠色，高風險：紅色',
+    
+    // Chart axis labels
+    xAxis: 'X軸',
+    yAxis: 'Y軸',
+    
+    // Monte Carlo Simulation
+    monteCarloSimulation: '蒙地卡羅模擬',
+    simulationYears: '年期',
+    simulationYearsTooltip: '模擬的投資年期長度',
+    simulationPaths: '路徑數',
+    simulationPathsTooltip: '隨機模擬的路徑數量，越多越精確但計算時間越長',
+    criticalWithdrawalRate: '臨界提領率',
+    computationTime: '計算時間',
+    pathsUsed: '路徑數',
+    p50EndValue: 'P50 終值',
+    bankruptcyRateDataTable: '破產機率數據表',
+    bankruptcyRateHeatmap: '破產機率熱圖',
+    simulationInProgress: '模擬中...',
+    startSimulation: '開始模擬',
+    lowRisk: '低風險',
+    mediumRisk: '中風險',
+    highRisk: '高風險',
+    veryHighRisk: '極高風險',
+    greenLowBankruptcy: '綠色: 低破產機率',
+    redHighBankruptcy: '紅色: 高破產機率',
+    yAxisWithdrawalRate: 'Y軸: 提領率 (%)',
+    xAxisStockAllocation: 'X軸: 股票配置 (%)',
+    stockAllocationLabel: '股票配置比例',
+    withdrawalRateLabel: '提領率',
+    bankruptcyRateLabel: '破產機率',
+    propertyReturn: '房產報酬率 (%)',
+    propertyReturnTooltip: '房產的年度期望報酬率',
+    detailedInformation: '詳細資訊',
   },
   'en-US': {
     // Header
@@ -367,9 +605,7 @@ export const translations: Record<Language, Translations> = {
     
     // Calculate Button
     calculateResults: 'Calculate Results',
-    startMonteCarlo: 'Start Monte Carlo Simulation',
     calculating: 'Calculating...',
-    monteCarloCalculating: 'Monte Carlo Simulation Calculating...',
     calculatingDescription: 'Please wait, the system is performing complex calculations.',
     
     // v1.3 Advanced Tax Features
@@ -386,14 +622,21 @@ export const translations: Record<Language, Translations> = {
     exemptions: 'Exemptions',
     exemptionsTooltip: 'Consider standard deduction, personal exemption, dividend exemption, capital gains exemption, etc. for personal income tax. These exemptions reduce taxable income and lower actual tax burden. Standard deduction and personal exemption are basic deductions, dividend and capital gains exemptions are additional benefits.',
     personalExemption: 'Personal Exemption',
+    personalExemptionTooltip: 'Standard deduction for personal income tax, used to reduce taxable income.',
     standardDeduction: 'Standard Deduction',
+    standardDeductionTooltip: 'Standard deduction for personal income tax, used to reduce taxable income.',
     dividendExemption: 'Dividend Exemption',
+    dividendExemptionTooltip: 'Dividend income exemption, used to reduce taxable income.',
     capitalGainsExemption: 'Capital Gains Exemption',
+    capitalGainsExemptionTooltip: 'Capital gains income exemption, used to reduce taxable income.',
     withholdingTax: 'Withholding Tax',
     withholdingTaxTooltip: 'Consider dividend withholding tax, foreign withholding tax, etc. Dividend withholding tax is pre-withheld tax when investments pay dividends, foreign withholding tax is local government tax on foreign investments. These taxes reduce actual income received.',
     dividendWithholding: 'Dividend Withholding',
+    dividendWithholdingTooltip: 'Dividend withholding tax is pre-withheld tax when investments pay dividends.',
     foreignWithholding: 'Foreign Withholding',
+    foreignWithholdingTooltip: 'Foreign withholding tax is local government tax on foreign investments.',
     applyToForeign: 'Apply to Foreign Income',
+    applyToForeignTooltip: 'Selecting this option means the income comes from abroad, which may require consideration of foreign withholding tax.',
     
     // v1.4 Comparison and Reports
     comparisonAndReports: 'Comparison and Reports',
@@ -403,17 +646,130 @@ export const translations: Record<Language, Translations> = {
     assetGrowthChart: 'Asset Growth Chart',
     taxComparisonChart: 'Tax Comparison Chart',
     
-    // v1.5 Monte Carlo
-    monteCarlo: 'Monte Carlo Simulation',
-    monteCarloTooltip: 'Perform Monte Carlo simulation to assess the risk and success rate of the retirement plan. Monte Carlo simulation runs thousands of random simulations considering investment return volatility, calculating success probability under different market conditions. This is more realistic than traditional fixed return calculations.',
-    volatility: 'Volatility',
-    volatilityTooltip: 'Expected volatility of the portfolio, representing the standard deviation of annual returns. Higher volatility means more variable returns and higher risk. Stock funds typically have 15-20% volatility, bond funds 5-10%. Higher volatility increases bankruptcy risk.',
-    simulations: 'Simulations',
-    simulationsTooltip: 'Number of Monte Carlo simulations, more simulations give more accurate results but longer calculation time. Recommend 1000-10000 simulations. 1000 simulations take 1-3 seconds, 10000 take 5-15 seconds.',
-    bankruptcyProbability: 'Bankruptcy Probability',
-    successRate: 'Success Rate',
-    worstCase: 'Worst Case',
-    bestCase: 'Best Case',
+    // v2.0 Real Estate Module
+    realEstateModule: 'Real Estate Module',
+    useRealEstate: 'Use Real Estate Module',
+    useRealEstateTooltip: 'Enable real estate module to consider rental income, vacancy rate, maintenance costs, mortgage payments, and other factors that affect retirement planning. Real estate can serve as an additional income source but also increases maintenance costs.',
+    propertyValue: 'Property Value ($)',
+    propertyValueTooltip: 'Current market value of the property, used to calculate property investment returns and maintenance costs.',
+    annualRent: 'Annual Rent ($)',
+    annualRentTooltip: 'Annual rental income from the property, actual income after deducting vacancy rate.',
+    vacancyRate: 'Vacancy Rate (%)',
+    vacancyRateTooltip: 'Annual vacancy rate of the property, indicating the proportion of time when the property cannot be rented. During vacancy periods, there is no rental income but maintenance costs and mortgage payments still apply.',
+    maintenanceRate: 'Maintenance Rate (%)',
+    maintenanceRateTooltip: 'Annual maintenance costs as a percentage of property value, including management fees, insurance, repairs, etc.',
+    propertyGrowthRate: 'Property Growth Rate (%)',
+    propertyGrowthRateTooltip: 'Annual growth rate of property value, used to calculate property capital appreciation.',
+    propertyVolatility: 'Property Volatility (%)',
+    propertyVolatilityTooltip: 'Annual volatility of property value, used for risk analysis.',
+    mortgageAmount: 'Mortgage Principal ($)',
+    mortgageAmountTooltip: 'Remaining mortgage principal, used to calculate monthly mortgage payments.',
+    mortgageRate: 'Mortgage Rate (%)',
+    mortgageRateTooltip: 'Annual mortgage interest rate, used to calculate monthly mortgage payments.',
+    mortgageYears: 'Mortgage Years',
+    mortgageYearsTooltip: 'Remaining mortgage term, used to calculate monthly mortgage payments.',
+    rentTaxRate: 'Rent Tax Rate (%)',
+    rentTaxRateTooltip: 'Tax rate on rental income, used to calculate after-tax rental income.',
+    
+    // v2.0 Risk Heatmap
+    riskHeatmap: 'Risk Heatmap',
+    riskHeatmapSettings: 'Risk Heatmap Settings',
+    useRiskHeatmap: 'Use Risk Heatmap',
+    useRiskHeatmapTooltip: 'Enable risk heatmap to display bankruptcy probability under different withdrawal rates and asset allocations. This helps find the most suitable withdrawal strategy.',
+    stockAllocation: 'Stock Allocation (%)',
+    stockAllocationTooltip: 'Stock allocation percentage in the investment portfolio, affecting overall returns and risk.',
+    bondAllocation: 'Bond Allocation (%)',
+    bondAllocationTooltip: 'Bond allocation percentage in the investment portfolio, affecting overall returns and risk.',
+    stockReturn: 'Stock Expected Return (%)',
+    stockReturnTooltip: 'Annual expected return of stocks, including dividends and price growth.',
+    stockVolatility: 'Stock Volatility (%)',
+    stockVolatilityTooltip: 'Annual volatility of stocks, indicating return variability.',
+    bondReturn: 'Bond Expected Return (%)',
+    bondReturnTooltip: 'Annual expected return of bonds, including interest and price changes.',
+    bondVolatility: 'Bond Volatility (%)',
+    bondVolatilityTooltip: 'Annual volatility of bonds, typically lower than stocks.',
+    stockBondCorrelation: 'Stock-Bond Correlation',
+    stockBondCorrelationTooltip: 'Correlation coefficient between stock and bond returns, affecting portfolio diversification.',
+    stockPropertyCorrelation: 'Stock-Property Correlation',
+    stockPropertyCorrelationTooltip: 'Correlation coefficient between stock and property returns, affecting portfolio diversification.',
+    bondPropertyCorrelation: 'Bond-Property Correlation',
+    bondPropertyCorrelationTooltip: 'Correlation coefficient between bond and property returns, affecting portfolio diversification.',
+    withdrawalRate: 'Withdrawal Rate (%)',
+    withdrawalRateTooltip: 'Annual withdrawal amount as a percentage of the investment portfolio.',
+    bankruptcyRate: 'Bankruptcy Rate (%)',
+    bankruptcyRateTooltip: 'Probability of portfolio depletion under specific withdrawal rates and asset allocations.',
+    withRealEstate: 'With Real Estate',
+    withoutRealEstate: 'Without Real Estate',
+    realEstateImpact: 'Real Estate Impact',
+    realEstateImpactTooltip: 'Impact of real estate on bankruptcy risk, can serve as additional income source or increase maintenance costs.',
+
     medianCase: 'Median Case',
+    
+    // Risk Heatmap specific translations
+    riskHeatmapTitle: 'Risk Heatmap',
+    riskHeatmapDescription: 'Display bankruptcy probability under different withdrawal rates and asset allocations.',
+    stockPercentage: 'Stock Allocation (%)',
+    withdrawalRatePercentage: 'Withdrawal Rate (%)',
+    bankruptcyRatePercentage: 'Bankruptcy Rate (%)',
+    riskLevelLow: 'Low Risk',
+    riskLevelMedium: 'Medium Risk',
+    riskLevelHigh: 'High Risk',
+    riskLevelVeryHigh: 'Very High Risk',
+    riskHeatmapInstructions: 'Please adjust the following parameters to view the risk heatmap:',
+    riskHeatmapInstructions1: '1. Adjust the "Withdrawal Rate" slider to observe bankruptcy probability at different withdrawal rates.',
+    riskHeatmapInstructions2: '2. Adjust the "Stock Allocation" slider to observe bankruptcy probability at different stock allocations.',
+    riskHeatmapInstructions3: '3. Adjust the "Bond Allocation" slider to observe bankruptcy probability at different bond allocations.',
+    riskHeatmapInstructions4: '4. Adjust the "Real Estate Allocation" slider to observe bankruptcy probability at different real estate allocations.',
+    
+    // Real Estate Module specific translations
+    realEstateInstructions: 'Please adjust the following parameters to view the real estate module impact:',
+    realEstateInstructions1: '1. Adjust the "Property Value" slider to observe the impact of property value changes on the withdrawal calculation.',
+    realEstateInstructions2: '2. Adjust the "Annual Rent" slider to observe the impact of rental income changes on the withdrawal calculation.',
+    realEstateInstructions3: '3. Adjust the "Vacancy Rate" slider to observe the impact of vacancy rate changes on the withdrawal calculation.',
+    
+    // Account Comparison specific translations
+    best: 'Best',
+    worst: 'Worst',
+    difference: 'Difference',
+    
+    // Language names
+    chinese: 'Chinese',
+    english: 'English',
+    
+    // Risk level descriptions
+    riskLevelDescription: 'Low Risk: Green, High Risk: Red',
+    
+    // Chart axis labels
+    xAxis: 'X-axis',
+    yAxis: 'Y-axis',
+    
+    // Monte Carlo Simulation
+    monteCarloSimulation: 'Monte Carlo Simulation',
+    simulationYears: 'Years',
+    simulationYearsTooltip: 'Length of investment simulation period',
+    simulationPaths: 'Paths',
+    simulationPathsTooltip: 'Number of random simulation paths, more paths are more accurate but take longer to calculate',
+    criticalWithdrawalRate: 'Critical Withdrawal Rate',
+    computationTime: 'Computation Time',
+    pathsUsed: 'Paths Used',
+    p50EndValue: 'P50 End Value',
+    bankruptcyRateDataTable: 'Bankruptcy Rate Data Table',
+    bankruptcyRateHeatmap: 'Bankruptcy Rate Heatmap',
+    simulationInProgress: 'Simulating...',
+    startSimulation: 'Start Simulation',
+    lowRisk: 'Low Risk',
+    mediumRisk: 'Medium Risk',
+    highRisk: 'High Risk',
+    veryHighRisk: 'Very High Risk',
+    greenLowBankruptcy: 'Green: Low Bankruptcy Rate',
+    redHighBankruptcy: 'Red: High Bankruptcy Rate',
+    yAxisWithdrawalRate: 'Y-axis: Withdrawal Rate (%)',
+    xAxisStockAllocation: 'X-axis: Stock Allocation (%)',
+    stockAllocationLabel: 'Stock Allocation',
+    withdrawalRateLabel: 'Withdrawal Rate',
+    bankruptcyRateLabel: 'Bankruptcy Rate',
+    propertyReturn: 'Property Return (%)',
+    propertyReturnTooltip: 'Annual expected return of property',
+    detailedInformation: 'Detailed Information',
   },
 }; 

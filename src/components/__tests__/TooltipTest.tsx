@@ -31,9 +31,7 @@ const mockProps = {
       foreignWithholding: 15.0,
       applyToForeign: false
     },
-    useMonteCarlo: false,
-    volatility: 15.0,
-    simulations: 1000
+
   },
   onInputChange: jest.fn(),
   onCalculate: jest.fn(),
@@ -109,13 +107,5 @@ describe('Tooltip Tests', () => {
     expect(feeRateLabel).toHaveAttribute('title');
   });
 
-  test('should show tooltip on hover for Monte Carlo', () => {
-    renderWithLanguage(<InputForm {...mockProps} />);
-    
-    const monteCarloLabel = screen.getByText(/蒙地卡羅模擬/);
-    expect(monteCarloLabel).toBeInTheDocument();
-    
-    // Check if tooltip attribute exists
-    expect(monteCarloLabel).toHaveAttribute('title');
-  });
+
 }); 

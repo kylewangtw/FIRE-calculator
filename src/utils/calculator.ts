@@ -1,4 +1,4 @@
-import { FireInputs, YearlyData, CalculationResult, TaxBracket, TaxExemptions, WithholdingTax, MonteCarloResult } from '../types';
+import { FireInputs, YearlyData, CalculationResult, TaxBracket, TaxExemptions, WithholdingTax, RiskHeatmapResult } from '../types';
 
 export class FireCalculator {
   private inputs: FireInputs;
@@ -106,77 +106,60 @@ export class FireCalculator {
 
   // 快速估算所需資產
   private quickEstimate(accountType: 'taxable' | 'deferred' | 'taxfree'): number {
-    const { withdrawal, inflation, years, targetMode, withdrawalTaxRate } = this.inputs;
+    const { withdrawal, inflation, years, timing } = this.inputs;
+    const effectiveReturn = this.getEffectiveReturn(accountType);
     
-    // 處理稅後目標轉換
-    let grossWithdrawal = withdrawal;
-    if (targetMode === 'net' && accountType === 'deferred') {
-      grossWithdrawal = withdrawal / (1 - withdrawalTaxRate / 100);
+    // 計算成長年金現值
+    const growthRate = (1 + inflation / 100) / (1 + effectiveReturn / 100) - 1;
+    const periods = years;
+    
+    let pvFactor: number;
+    if (timing === 'begin') {
+      // 期初領：先付年金
+      pvFactor = (1 - Math.pow(1 + growthRate, -periods)) / growthRate * (1 + growthRate);
+    } else {
+      // 期末領：普通年金
+      pvFactor = (1 - Math.pow(1 + growthRate, -periods)) / growthRate;
     }
     
-    const effectiveReturn = this.getEffectiveReturn(accountType) / 100;
-    const inflationRate = inflation / 100;
-    
-    // 成長年金現值公式
-    if (Math.abs(effectiveReturn - inflationRate) < 0.001) {
-      // 報酬率等於通膨率時的特殊情況
-      return grossWithdrawal * years;
-    }
-    
-    const growthFactor = (1 + inflationRate) / (1 + effectiveReturn);
-    const presentValueFactor = (1 - Math.pow(growthFactor, years)) / (1 - growthFactor);
-    
-    return grossWithdrawal * presentValueFactor;
+    return withdrawal * pvFactor;
   }
 
-  // 精算所需資產（逐年模擬）
+  // 精確計算所需資產
   private preciseCalculation(accountType: 'taxable' | 'deferred' | 'taxfree'): number {
-    const { withdrawal, inflation, years, targetMode, withdrawalTaxRate } = this.inputs;
+    const { withdrawal, years } = this.inputs;
     
-    // 處理稅後目標轉換
-    let grossWithdrawal = withdrawal;
-    if (targetMode === 'net' && accountType === 'deferred') {
-      grossWithdrawal = withdrawal / (1 - withdrawalTaxRate / 100);
-    }
+    // 使用二分法找到正確的起始資產
+    let lowerBound = 0;
+    let upperBound = withdrawal * years * 2; // 合理的上界
     
-    // 二分法找尋所需起始資產
-    let low = 0;
-    let high = withdrawal * years * 2; // 保守上限
-    let result = 0;
+    const tolerance = 1; // 容許誤差 1 元
     
-    for (let i = 0; i < 50; i++) { // 最多50次迭代
-      const mid = (low + high) / 2;
-      const yearlyData = this.simulateYearlyData(mid, accountType);
+    while (upperBound - lowerBound > tolerance) {
+      const midPoint = (lowerBound + upperBound) / 2;
+      const yearlyData = this.simulateYearlyData(midPoint, accountType);
       
-      if (yearlyData.length > 0 && yearlyData[yearlyData.length - 1].endingBalance >= -1) {
-        result = mid;
-        high = mid;
+      if (yearlyData[yearlyData.length - 1].endingBalance >= 0) {
+        upperBound = midPoint;
       } else {
-        low = mid;
+        lowerBound = midPoint;
       }
-      
-      if (high - low < 1) break; // 精確到1元
     }
     
-    return result;
+    return upperBound;
   }
 
-  // 逐年模擬
+  // 模擬年度數據
   private simulateYearlyData(initialBalance: number, accountType: 'taxable' | 'deferred' | 'taxfree'): YearlyData[] {
-    const { withdrawal, inflation, dividendYield, priceGrowth, years, targetMode, withdrawalTaxRate } = this.inputs;
+    const { withdrawal, inflation, dividendYield, priceGrowth, years, timing } = this.inputs;
     const yearlyData: YearlyData[] = [];
     
     let balance = initialBalance;
     let costBasis = initialBalance;
     
     for (let year = 1; year <= years; year++) {
-      const withdrawalAmount = withdrawal * Math.pow(1 + inflation / 100, year - 1);
-      
-      // 處理稅後目標轉換
-      let grossWithdrawal = withdrawalAmount;
-      if (targetMode === 'net' && accountType === 'deferred') {
-        grossWithdrawal = withdrawalAmount / (1 - withdrawalTaxRate / 100);
-      }
+      const inflationFactor = Math.pow(1 + inflation / 100, year - 1);
+      const grossWithdrawal = withdrawal * inflationFactor;
       
       let fees = 0;
       let dividends = 0;
@@ -188,24 +171,20 @@ export class FireCalculator {
       let netWithdrawal = grossWithdrawal;
       
       if (accountType === 'taxable') {
-        // 一般應稅帳戶
         fees = balance * this.inputs.feeRate / 100;
         dividends = balance * dividendYield / 100;
         dividendTax = this.calculateAdvancedTax(dividends, 'taxable');
         priceGrowthAmount = balance * priceGrowth / 100;
         
-        // 先用稅後股息支付
         const afterTaxDividends = dividends - dividendTax;
         let remainingNeed = grossWithdrawal - afterTaxDividends;
         
         if (remainingNeed > 0) {
-          // 需要賣出資產
           const unrealizedGainRatio = Math.max(balance - costBasis, 0) / balance;
           const sellAmount = remainingNeed / (1 - unrealizedGainRatio * this.inputs.capitalGainsTaxRate / 100);
           realizedGains = sellAmount * unrealizedGainRatio;
           capitalGainsTax = this.calculateAdvancedTax(realizedGains, 'taxable');
           
-          // 更新成本基礎
           const costSold = sellAmount * (1 - unrealizedGainRatio);
           costBasis -= costSold;
           
@@ -215,7 +194,6 @@ export class FireCalculator {
         netWithdrawal = grossWithdrawal - dividendTax - capitalGainsTax;
         
       } else if (accountType === 'deferred') {
-        // 延稅帳戶
         fees = balance * this.inputs.feeRate / 100;
         priceGrowthAmount = balance * (dividendYield + priceGrowth) / 100;
         withdrawalTax = this.calculateAdvancedTax(grossWithdrawal, 'deferred');
@@ -223,7 +201,6 @@ export class FireCalculator {
         balance = balance + priceGrowthAmount - fees - grossWithdrawal;
         
       } else {
-        // 免稅帳戶
         fees = balance * this.inputs.feeRate / 100;
         priceGrowthAmount = balance * (dividendYield + priceGrowth) / 100;
         balance = balance + priceGrowthAmount - fees - grossWithdrawal;
@@ -249,166 +226,162 @@ export class FireCalculator {
     return yearlyData;
   }
 
-  // 生成隨機報酬率
+  // 生成隨機報酬
   private generateRandomReturn(meanReturn: number, volatility: number): number {
-    // 使用 Box-Muller 轉換生成常態分佈
     const u1 = Math.random();
     const u2 = Math.random();
-    const z0 = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
-    
-    return meanReturn + (z0 * volatility / 100);
+    const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+    return Math.exp(meanReturn / 100 - 0.5 * Math.pow(volatility / 100, 2) + volatility / 100 * z) - 1;
   }
 
-  // 蒙地卡羅模擬
-  private runMonteCarloSimulation(accountType: 'taxable' | 'deferred' | 'taxfree'): MonteCarloResult {
-    const { withdrawal, inflation, years, volatility, simulations } = this.inputs;
-    const meanReturn = this.getEffectiveReturn(accountType) / 100;
-    const inflationRate = inflation / 100;
+
+
+  // 生成相關隨機變數
+  private generateCorrelatedReturns(): { stock: number, bond: number, property: number } {
+    const { stockReturn, stockVolatility, bondReturn, bondVolatility, propertyGrowthRate, propertyVolatility, stockBondCorrelation, stockPropertyCorrelation, bondPropertyCorrelation } = this.inputs;
     
-    const results: number[] = [];
-    let successCount = 0;
+    // 生成獨立標準常態隨機變數
+    const u1 = Math.random();
+    const u2 = Math.random();
+    const u3 = Math.random();
     
-    for (let sim = 0; sim < simulations; sim++) {
-      let balance = 0;
-      let low = 0;
-      let high = withdrawal * years * 3; // 更寬鬆的上限
-      
-      // 二分法找尋所需資產
-      for (let i = 0; i < 30; i++) {
-        const mid = (low + high) / 2;
-        const yearlyData = this.simulateYearlyDataWithVolatility(mid, accountType, meanReturn, volatility);
-        
-        if (yearlyData.length > 0 && yearlyData[yearlyData.length - 1].endingBalance >= -1) {
-          balance = mid;
-          high = mid;
-        } else {
-          low = mid;
-        }
-        
-        if (high - low < 1) break;
-      }
-      
-      results.push(balance);
-      
-      // 檢查是否成功（期末資產 > 0）
-      const yearlyData = this.simulateYearlyDataWithVolatility(balance, accountType, meanReturn, volatility);
-      if (yearlyData.length > 0 && yearlyData[yearlyData.length - 1].endingBalance > 0) {
-        successCount++;
-      }
-    }
+    const z1 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+    const z2 = Math.sqrt(-2 * Math.log(u1)) * Math.sin(2 * Math.PI * u2);
+    const z3 = Math.sqrt(-2 * Math.log(u3)) * Math.cos(2 * Math.PI * Math.random());
     
-    // 排序結果
-    results.sort((a, b) => a - b);
+    // 使用 Cholesky 分解生成相關隨機變數
+    const stock = z1;
+    const bond = stockBondCorrelation * z1 + Math.sqrt(1 - Math.pow(stockBondCorrelation, 2)) * z2;
+    const property = stockPropertyCorrelation * z1 + 
+                    (bondPropertyCorrelation - stockBondCorrelation * stockPropertyCorrelation) / Math.sqrt(1 - Math.pow(stockBondCorrelation, 2)) * z2 +
+                    Math.sqrt(1 - Math.pow(stockPropertyCorrelation, 2) - Math.pow((bondPropertyCorrelation - stockBondCorrelation * stockPropertyCorrelation) / Math.sqrt(1 - Math.pow(stockBondCorrelation, 2)), 2)) * z3;
     
-    const successRate = (successCount / simulations) * 100;
-    const bankruptcyProbability = 100 - successRate;
-    
+    // 轉換為實際報酬率
     return {
-      successRate,
-      bankruptcyProbability,
-      worstCase: results[results.length - 1],
-      bestCase: results[0],
-      medianCase: results[Math.floor(results.length / 2)],
-      percentiles: [
-        results[Math.floor(results.length * 0.05)], // 5th percentile
-        results[Math.floor(results.length * 0.25)], // 25th percentile
-        results[Math.floor(results.length * 0.75)], // 75th percentile
-        results[Math.floor(results.length * 0.95)]  // 95th percentile
-      ]
+      stock: Math.exp(stockReturn / 100 - 0.5 * Math.pow(stockVolatility / 100, 2) + stockVolatility / 100 * stock) - 1,
+      bond: Math.exp(bondReturn / 100 - 0.5 * Math.pow(bondVolatility / 100, 2) + bondVolatility / 100 * bond) - 1,
+      property: Math.exp(propertyGrowthRate / 100 - 0.5 * Math.pow(propertyVolatility / 100, 2) + propertyVolatility / 100 * property) - 1
     };
   }
 
-  // 帶波動率的年度模擬
-  private simulateYearlyDataWithVolatility(
-    initialBalance: number, 
-    accountType: 'taxable' | 'deferred' | 'taxfree',
-    meanReturn: number,
-    volatility: number
-  ): YearlyData[] {
-    const { withdrawal, inflation, dividendYield, priceGrowth, years, targetMode, withdrawalTaxRate } = this.inputs;
-    const yearlyData: YearlyData[] = [];
+  // 計算房產現金流
+  private calculateRealEstateCashFlow(year: number, propertyValue: number): number {
+    const { annualRent, vacancyRate, maintenanceRate, mortgageAmount, mortgageRate, mortgageYears, rentTaxRate, inflation } = this.inputs;
     
-    let balance = initialBalance;
-    let costBasis = initialBalance;
+    // 租金淨額（考慮通膨、空置率、稅金）
+    const inflationFactor = Math.pow(1 + inflation / 100, year - 1);
+    const grossRent = annualRent * inflationFactor;
+    const netRent = grossRent * (1 - vacancyRate / 100) * (1 - rentTaxRate / 100);
+    
+    // 維護費
+    const maintenance = propertyValue * maintenanceRate / 100;
+    
+    // 房貸本息（固定支付）
+    const monthlyRate = mortgageRate / 100 / 12;
+    const totalPayments = mortgageYears * 12;
+    const monthlyPayment = mortgageAmount * monthlyRate * Math.pow(1 + monthlyRate, totalPayments) / (Math.pow(1 + monthlyRate, totalPayments) - 1);
+    const annualMortgagePayment = monthlyPayment * 12;
+    
+    return netRent - maintenance - annualMortgagePayment;
+  }
+
+  // 模擬單一路徑（用於風險熱圖）
+  private simulatePath(
+    initialFinancialAssets: number,
+    withdrawalRate: number,
+    stockAllocation: number,
+    withRealEstate: boolean
+  ): { bankruptcy: boolean, finalAssets: number } {
+    const { years, propertyValue, propertyGrowthRate, propertyVolatility, stockReturn, stockVolatility, bondReturn, bondVolatility } = this.inputs;
+    
+    let financialAssets = initialFinancialAssets;
+    let propertyValueCurrent = propertyValue;
     
     for (let year = 1; year <= years; year++) {
-      const withdrawalAmount = withdrawal * Math.pow(1 + inflation / 100, year - 1);
+      // 生成相關隨機報酬
+      const returns = this.generateCorrelatedReturns();
       
-      // 生成隨機報酬率
-      const randomReturn = this.generateRandomReturn(meanReturn, volatility);
-      const randomDividendYield = Math.max(0, dividendYield / 100 + (Math.random() - 0.5) * volatility / 100);
-      const randomPriceGrowth = randomReturn - randomDividendYield;
+      // 計算投資組合報酬
+      const bondAllocation = 100 - stockAllocation;
+      const portfolioReturn = (stockAllocation / 100) * returns.stock + (bondAllocation / 100) * returns.bond;
       
-      // 處理稅後目標轉換
-      let grossWithdrawal = withdrawalAmount;
-      if (targetMode === 'net' && accountType === 'deferred') {
-        grossWithdrawal = withdrawalAmount / (1 - withdrawalTaxRate / 100);
+      // 更新金融資產
+      financialAssets *= (1 + portfolioReturn);
+      
+      // 更新房產價值
+      if (withRealEstate) {
+        propertyValueCurrent *= (1 + returns.property);
       }
       
-      let fees = 0;
-      let dividends = 0;
-      let dividendTax = 0;
-      let priceGrowthAmount = 0;
-      let realizedGains = 0;
-      let capitalGainsTax = 0;
-      let withdrawalTax = 0;
-      let netWithdrawal = grossWithdrawal;
+      // 計算提領需求（考慮通膨）
+      const inflationFactor = Math.pow(1 + this.inputs.inflation / 100, year - 1);
+      const withdrawalAmount = initialFinancialAssets * withdrawalRate / 100 * inflationFactor;
       
-      if (accountType === 'taxable') {
-        fees = balance * this.inputs.feeRate / 100;
-        dividends = balance * randomDividendYield;
-        dividendTax = this.calculateAdvancedTax(dividends, 'taxable');
-        priceGrowthAmount = balance * randomPriceGrowth;
-        
-        const afterTaxDividends = dividends - dividendTax;
-        let remainingNeed = grossWithdrawal - afterTaxDividends;
-        
-        if (remainingNeed > 0) {
-          const unrealizedGainRatio = Math.max(balance - costBasis, 0) / balance;
-          const sellAmount = remainingNeed / (1 - unrealizedGainRatio * this.inputs.capitalGainsTaxRate / 100);
-          realizedGains = sellAmount * unrealizedGainRatio;
-          capitalGainsTax = this.calculateAdvancedTax(realizedGains, 'taxable');
-          
-          const costSold = sellAmount * (1 - unrealizedGainRatio);
-          costBasis -= costSold;
-          
-          balance -= sellAmount;
-        }
-        
-        netWithdrawal = grossWithdrawal - dividendTax - capitalGainsTax;
-        
-      } else if (accountType === 'deferred') {
-        fees = balance * this.inputs.feeRate / 100;
-        priceGrowthAmount = balance * randomReturn;
-        withdrawalTax = this.calculateAdvancedTax(grossWithdrawal, 'deferred');
-        netWithdrawal = grossWithdrawal - withdrawalTax;
-        balance = balance + priceGrowthAmount - fees - grossWithdrawal;
-        
-      } else {
-        fees = balance * this.inputs.feeRate / 100;
-        priceGrowthAmount = balance * randomReturn;
-        balance = balance + priceGrowthAmount - fees - grossWithdrawal;
+      // 計算房產現金流
+      let realEstateCashFlow = 0;
+      if (withRealEstate) {
+        realEstateCashFlow = this.calculateRealEstateCashFlow(year, propertyValueCurrent);
       }
       
-      yearlyData.push({
-        year,
-        beginningBalance: balance + grossWithdrawal + fees + dividendTax + capitalGainsTax + withdrawalTax,
-        fees,
-        dividends,
-        dividendTax,
-        priceGrowth: priceGrowthAmount,
-        realizedGains,
-        capitalGainsTax,
-        withdrawalTax,
-        grossWithdrawal,
-        netWithdrawal,
-        endingBalance: balance,
-        costBasis
-      });
+      // 檢查是否需要賣出資產
+      const availableCash = realEstateCashFlow;
+      const remainingNeed = withdrawalAmount - availableCash;
+      
+      if (remainingNeed > 0) {
+        financialAssets -= remainingNeed;
+      }
+      
+      // 檢查破產
+      if (financialAssets < 0) {
+        return { bankruptcy: true, finalAssets: financialAssets };
+      }
     }
     
-    return yearlyData;
+    return { bankruptcy: false, finalAssets: financialAssets };
   }
+
+  // 生成風險熱圖
+  private generateRiskHeatmap(withRealEstate: boolean): RiskHeatmapResult {
+    const withdrawalRates = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0];
+    const stockAllocations = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+    const bankruptcyRates: number[][] = [];
+    
+    const simulations = 1000; // 固定使用 1000 次模擬
+    const initialAssets = this.inputs.withdrawal * 25; // 使用 4% 法則作為基準
+    
+    for (let i = 0; i < stockAllocations.length; i++) {
+      bankruptcyRates[i] = [];
+      for (let j = 0; j < withdrawalRates.length; j++) {
+        let bankruptcyCount = 0;
+        
+        for (let sim = 0; sim < simulations; sim++) {
+          const result = this.simulatePath(
+            initialAssets,
+            withdrawalRates[j],
+            stockAllocations[i],
+            withRealEstate
+          );
+          
+          if (result.bankruptcy) {
+            bankruptcyCount++;
+          }
+        }
+        
+        bankruptcyRates[i][j] = bankruptcyCount / simulations;
+      }
+    }
+    
+    return {
+      withdrawalRates,
+      stockAllocations,
+      bankruptcyRates,
+      withRealEstate
+    };
+  }
+
+
+
+
 
   // 主要計算方法
   calculate(): CalculationResult {
@@ -438,9 +411,19 @@ export class FireCalculator {
       fourPercentRule
     };
 
-    // v1.5 蒙地卡羅模擬
-    if (this.inputs.useMonteCarlo) {
-      result.monteCarloResult = this.runMonteCarloSimulation('taxable');
+
+
+    // v2.0 風險熱圖
+    if (this.inputs.useRiskHeatmap) {
+      // 生成無房產和有房產的熱圖
+      const withoutRealEstate = this.generateRiskHeatmap(false);
+      const withRealEstate = this.generateRiskHeatmap(true);
+      
+      // 使用有房產的結果作為主要結果，但包含兩種比較
+      result.riskHeatmapResult = {
+        ...withRealEstate,
+        withoutRealEstate: withoutRealEstate.bankruptcyRates
+      };
     }
 
     return result;

@@ -21,29 +21,51 @@ export interface FireInputs {
   exemptions: TaxExemptions; // 免稅額
   withholdingTax: WithholdingTax; // 預扣稅
   
-  // v1.5 蒙地卡羅模擬
-  useMonteCarlo: boolean; // 是否使用蒙地卡羅模擬
-  volatility: number; // 波動率 (%)
-  simulations: number; // 模擬次數
+
+
+  // v2.0 房產模組
+  useRealEstate: boolean; // 是否包含房產
+  propertyValue: number; // 房產市價
+  annualRent: number; // 年租金
+  vacancyRate: number; // 空置率 (%)
+  maintenanceRate: number; // 維護費率 (%)
+  propertyGrowthRate: number; // 房價年增長率 (%)
+  propertyVolatility: number; // 房價波動率 (%)
+  mortgageAmount: number; // 房貸本金
+  mortgageRate: number; // 房貸利率 (%)
+  mortgageYears: number; // 房貸年期
+  rentTaxRate: number; // 租金稅率 (%)
+
+  // v2.0 風險熱圖
+  useRiskHeatmap: boolean; // 是否使用風險熱圖
+  stockAllocation: number; // 股票配置比例 (%)
+  bondAllocation: number; // 債券配置比例 (%)
+  stockReturn: number; // 股票期望報酬率 (%)
+  stockVolatility: number; // 股票波動率 (%)
+  bondReturn: number; // 債券期望報酬率 (%)
+  bondVolatility: number; // 債券波動率 (%)
+  stockBondCorrelation: number; // 股債相關係數
+  stockPropertyCorrelation: number; // 股房相關係數
+  bondPropertyCorrelation: number; // 債房相關係數
 }
 
 export interface TaxBracket {
-  minIncome: number; // 最低收入
-  maxIncome: number | null; // 最高收入 (null 表示無上限)
-  rate: number; // 邊際稅率 (%)
+  minIncome: number;
+  maxIncome: number | null;
+  rate: number;
 }
 
 export interface TaxExemptions {
-  personalExemption: number; // 個人免稅額
-  standardDeduction: number; // 標準扣除額
-  dividendExemption: number; // 股息免稅額
-  capitalGainsExemption: number; // 資本利得免稅額
+  personalExemption: number;
+  standardDeduction: number;
+  dividendExemption: number;
+  capitalGainsExemption: number;
 }
 
 export interface WithholdingTax {
-  dividendWithholding: number; // 股息預扣稅率 (%)
-  foreignWithholding: number; // 海外預扣稅率 (%)
-  applyToForeign: boolean; // 是否適用海外投資
+  dividendWithholding: number;
+  foreignWithholding: number;
+  applyToForeign: boolean;
 }
 
 export interface YearlyData {
@@ -62,13 +84,14 @@ export interface YearlyData {
   costBasis: number;
 }
 
-export interface MonteCarloResult {
-  successRate: number; // 成功率
-  bankruptcyProbability: number; // 破產機率
-  worstCase: number; // 最差情況所需資產
-  bestCase: number; // 最佳情況所需資產
-  medianCase: number; // 中位數情況所需資產
-  percentiles: number[]; // 各百分位數的所需資產
+
+
+export interface RiskHeatmapResult {
+  withdrawalRates: number[]; // 提領率範圍 (2-6%)
+  stockAllocations: number[]; // 股票配置範圍 (0-100%)
+  bankruptcyRates: number[][]; // 破產機率矩陣
+  withRealEstate: boolean; // 是否包含房產
+  withoutRealEstate?: number[][]; // 無房產的破產機率矩陣（用於比較）
 }
 
 export interface CalculationResult {
@@ -79,5 +102,54 @@ export interface CalculationResult {
   firstYearFees: number;
   firstYearTaxes: number;
   fourPercentRule: number;
-  monteCarloResult?: MonteCarloResult; // v1.5 蒙地卡羅結果
+
+  riskHeatmapResult?: RiskHeatmapResult;
+  monteCarloResult?: MonteCarloResult;
+}
+
+// Monte Carlo Simulation Types
+export interface MonteCarloInputs {
+  years: 30 | 40 | 50;
+  paths: 1000 | 5000 | 10000;
+  withdrawalRate: number; // 2-6%
+  stockAllocation: number; // 0-100%
+  
+  // Asset parameters
+  stockReturn: number;
+  stockVolatility: number;
+  bondReturn: number;
+  bondVolatility: number;
+  propertyReturn: number;
+  propertyVolatility: number;
+  
+  // Correlations
+  stockBondCorrelation: number;
+  stockPropertyCorrelation: number;
+  bondPropertyCorrelation: number;
+  
+  // Real estate parameters
+  propertyValue: number;
+  mortgageAmount: number;
+  mortgageRate: number;
+  mortgageYears: number;
+}
+
+export interface MonteCarloResult {
+  bankruptcyRates: number[][]; // [withdrawalRate][stockAllocation]
+  withdrawalRates: number[]; // 2-6%
+  stockAllocations: number[]; // 0-100%
+  percentiles: {
+    p10: number;
+    p50: number;
+    p90: number;
+  };
+  criticalWithdrawalRate: number;
+  computationTime: number;
+  pathsUsed: number;
+}
+
+export interface MonteCarloGridPoint {
+  withdrawalRate: number;
+  stockAllocation: number;
+  bankruptcyRate: number;
 } 

@@ -1,17 +1,28 @@
 import React from 'react';
-import { CalculationResult } from '../types';
+import { CalculationResult, FireInputs } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
 import AccountComparison from './AccountComparison';
-import MonteCarloResults from './MonteCarloResults';
+
+import RiskHeatmap from './RiskHeatmap';
 import { exportToCSV, exportSummaryToCSV } from '../utils/exportUtils';
 
 interface ResultsProps {
   result: CalculationResult | null;
   error: string | null;
   isCalculating: boolean;
+  inputs: FireInputs;
+  onInputChange: (field: keyof FireInputs, value: any) => void;
+  onCalculate: () => void;
 }
 
-const Results: React.FC<ResultsProps> = ({ result, error, isCalculating }) => {
+const Results: React.FC<ResultsProps> = ({ 
+  result, 
+  error, 
+  isCalculating, 
+  inputs, 
+  onInputChange, 
+  onCalculate 
+}) => {
   const { t, language } = useLanguage();
   
   const formatCurrency = (value: number): string => {
@@ -81,18 +92,20 @@ const Results: React.FC<ResultsProps> = ({ result, error, isCalculating }) => {
 
   return (
     <div className="space-y-6">
-      {/* 帳戶比較 */}
+      {/* Account Comparison */}
       <AccountComparison result={result} />
       
-      {/* 蒙地卡羅結果 */}
-      {result.monteCarloResult && (
-        <MonteCarloResults result={result.monteCarloResult} />
+
+
+      {/* Risk Heatmap Results */}
+      {result.riskHeatmapResult && (
+        <RiskHeatmap result={result.riskHeatmapResult} />
       )}
       
-      {/* 卡片結果 */}
+      {/* Detailed Information */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-bold text-gray-800">{t.requiredInitialAssets}</h3>
+          <h3 className="text-xl font-bold text-gray-800">{t.detailedInformation}</h3>
           <div className="space-x-2">
             <button
               onClick={handleExportSummary}
@@ -100,20 +113,6 @@ const Results: React.FC<ResultsProps> = ({ result, error, isCalculating }) => {
             >
               {t.exportCSV}
             </button>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <h4 className="text-sm font-medium text-blue-800 mb-2">{t.generalTaxableAccount}</h4>
-            <p className="text-2xl font-bold text-blue-900">{formatCurrency(result.taxableRequired)}</p>
-          </div>
-          <div className="bg-green-50 p-4 rounded-lg">
-            <h4 className="text-sm font-medium text-green-800 mb-2">{t.taxDeferredAccount}</h4>
-            <p className="text-2xl font-bold text-green-900">{formatCurrency(result.deferredRequired)}</p>
-          </div>
-          <div className="bg-purple-50 p-4 rounded-lg">
-            <h4 className="text-sm font-medium text-purple-800 mb-2">{t.taxFreeAccount}</h4>
-            <p className="text-2xl font-bold text-purple-900">{formatCurrency(result.taxfreeRequired)}</p>
           </div>
         </div>
         
@@ -137,7 +136,7 @@ const Results: React.FC<ResultsProps> = ({ result, error, isCalculating }) => {
         </div>
       </div>
 
-      {/* 年度表 */}
+      {/* Yearly Table */}
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-bold text-gray-800">{t.yearlyCashFlow}</h3>

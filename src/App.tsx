@@ -2,7 +2,8 @@ import React, { useState, useCallback } from 'react';
 import InputForm from './components/InputForm';
 import Results from './components/Results';
 import LanguageSwitcher from './components/LanguageSwitcher';
-import { FireInputs, CalculationResult } from './types';
+import MonteCarloSimulation from './components/MonteCarloSimulation';
+import { FireInputs, CalculationResult, MonteCarloResult } from './types';
 import { FireCalculator } from './utils/calculator';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import './App.css';
@@ -43,16 +44,39 @@ const defaultInputs: FireInputs = {
     applyToForeign: false
   },
   
-  // v1.5 蒙地卡羅模擬
-  useMonteCarlo: false,
-  volatility: 15.0,
-  simulations: 1000
+
+
+  // v2.0 房產模組
+  useRealEstate: false,
+  propertyValue: 15000000,
+  annualRent: 360000,
+  vacancyRate: 10.0,
+  maintenanceRate: 1.5,
+  propertyGrowthRate: 3.0,
+  propertyVolatility: 6.0,
+  mortgageAmount: 10000000,
+  mortgageRate: 2.0,
+  mortgageYears: 20,
+  rentTaxRate: 15.0,
+
+  // v2.0 風險熱圖
+  useRiskHeatmap: false,
+  stockAllocation: 60.0,
+  bondAllocation: 40.0,
+  stockReturn: 7.0,
+  stockVolatility: 15.0,
+  bondReturn: 3.0,
+  bondVolatility: 6.0,
+  stockBondCorrelation: 0.25,
+  stockPropertyCorrelation: 0.40,
+  bondPropertyCorrelation: 0.10
 };
 
 const AppContent: React.FC = () => {
   const { t } = useLanguage();
   const [inputs, setInputs] = useState<FireInputs>(defaultInputs);
   const [result, setResult] = useState<CalculationResult | null>(null);
+  const [monteCarloResult, setMonteCarloResult] = useState<MonteCarloResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
 
@@ -65,18 +89,9 @@ const AppContent: React.FC = () => {
       setError(null);
       setIsCalculating(true);
       
-      // 如果是蒙地卡羅模擬，顯示計算中狀態
-      if (inputs.useMonteCarlo) {
-        console.log('開始蒙地卡羅模擬...');
-      }
-      
       const calculator = new FireCalculator(inputs);
       const calculationResult = calculator.calculate();
       setResult(calculationResult);
-      
-      if (inputs.useMonteCarlo) {
-        console.log('蒙地卡羅模擬完成！');
-      }
     } catch (err) {
       setError(err instanceof Error ? err.message : t.genericError);
       setResult(null);
@@ -85,12 +100,17 @@ const AppContent: React.FC = () => {
     }
   }, [inputs, t.genericError]);
 
-  // 當基本參數改變時自動重新計算（除非啟用蒙地卡羅）
+  // 當參數改變時自動重新計算
   React.useEffect(() => {
-    if (!inputs.useMonteCarlo) {
+    calculate();
+  }, [calculate]);
+
+  // 當風險熱圖開關改變時，如果是啟用狀態則立即計算
+  React.useEffect(() => {
+    if (inputs.useRiskHeatmap) {
       calculate();
     }
-  }, [calculate, inputs.useMonteCarlo]);
+  }, [inputs.useRiskHeatmap, calculate]);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -111,7 +131,17 @@ const AppContent: React.FC = () => {
             onCalculate={calculate}
             isCalculating={isCalculating}
           />
-          <Results result={result} error={error} isCalculating={isCalculating} />
+          <Results 
+            result={result} 
+            error={error} 
+            isCalculating={isCalculating}
+            inputs={inputs}
+            onInputChange={handleInputChange}
+            onCalculate={calculate}
+          />
+          <MonteCarloSimulation 
+            onResultChange={setMonteCarloResult}
+          />
         </main>
 
         <footer className="mt-12 text-center text-gray-500 text-sm">

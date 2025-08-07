@@ -15,7 +15,7 @@ const LanguageSwitcher: React.FC = () => {
             : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
         }`}
       >
-        中文
+        {t.chinese}
       </button>
       <button
         onClick={() => setLanguage('en-US')}
@@ -25,7 +25,7 @@ const LanguageSwitcher: React.FC = () => {
             : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
         }`}
       >
-        English
+        {t.english}
       </button>
     </div>
   );

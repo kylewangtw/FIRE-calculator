@@ -29,11 +29,7 @@ function testTooltipContent() {
       keywords: ['帳戶', '稅務', '一般應稅', '延稅', '免稅'],
       description: '帳戶型態 tooltip'
     },
-    {
-      field: 'monteCarloTooltip',
-      keywords: ['蒙地卡羅', '模擬', '風險', '成功率'],
-      description: '蒙地卡羅模擬 tooltip'
-    },
+    
     {
       field: 'volatilityTooltip',
       keywords: ['波動率', '標準差', '風險', '股票', '債券'],

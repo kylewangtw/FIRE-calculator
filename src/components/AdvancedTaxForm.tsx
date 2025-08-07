@@ -1,6 +1,7 @@
 import React from 'react';
 import { FireInputs, TaxBracket } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
+import Tooltip from './Tooltip';
 
 interface AdvancedTaxFormProps {
   inputs: FireInputs;
@@ -53,10 +54,12 @@ const AdvancedTaxForm: React.FC<AdvancedTaxFormProps> = ({ inputs, onInputChange
     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
       <h3 className="text-lg font-semibold text-gray-700 mb-4">{t.advancedTaxFeatures}</h3>
       
-      {/* 稅率級距 */}
+      {/* Tax Brackets */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-3">
-          <h4 className="text-md font-medium text-gray-600">{t.taxBrackets}</h4>
+          <Tooltip content={t.taxBracketsTooltip}>
+            <h4 className="text-md font-medium text-gray-600 cursor-help">{t.taxBrackets}</h4>
+          </Tooltip>
           <button
             onClick={addTaxBracket}
             className="px-3 py-1 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600"
@@ -104,85 +107,126 @@ const AdvancedTaxForm: React.FC<AdvancedTaxFormProps> = ({ inputs, onInputChange
           ))}
         </div>
       </div>
-
-      {/* 扣除額 */}
+      
+      {/* Exemptions */}
       <div className="mb-6">
-        <h4 className="text-md font-medium text-gray-600 mb-3">{t.exemptions}</h4>
+        <Tooltip content={t.exemptionsTooltip}>
+          <h4 className="text-md font-medium text-gray-600 mb-3 cursor-help">{t.exemptions}</h4>
+        </Tooltip>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t.personalExemption}</label>
+            <Tooltip content={t.personalExemptionTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.personalExemption}
+              </label>
+            </Tooltip>
             <input
               type="number"
               value={inputs.exemptions.personalExemption}
               onChange={(e) => updateExemption('personalExemption', parseFloat(e.target.value))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="92000"
             />
           </div>
+          
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t.standardDeduction}</label>
+            <Tooltip content={t.standardDeductionTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.standardDeduction}
+              </label>
+            </Tooltip>
             <input
               type="number"
               value={inputs.exemptions.standardDeduction}
               onChange={(e) => updateExemption('standardDeduction', parseFloat(e.target.value))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="124000"
             />
           </div>
+          
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t.dividendExemption}</label>
+            <Tooltip content={t.dividendExemptionTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.dividendExemption}
+              </label>
+            </Tooltip>
             <input
               type="number"
               value={inputs.exemptions.dividendExemption}
               onChange={(e) => updateExemption('dividendExemption', parseFloat(e.target.value))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="270000"
             />
           </div>
+          
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t.capitalGainsExemption}</label>
+            <Tooltip content={t.capitalGainsExemptionTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.capitalGainsExemption}
+              </label>
+            </Tooltip>
             <input
               type="number"
               value={inputs.exemptions.capitalGainsExemption}
               onChange={(e) => updateExemption('capitalGainsExemption', parseFloat(e.target.value))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="600000"
             />
           </div>
         </div>
       </div>
-
-      {/* 預扣稅 */}
+      
+      {/* Withholding Tax */}
       <div className="mb-6">
-        <h4 className="text-md font-medium text-gray-600 mb-3">{t.withholdingTax}</h4>
+        <Tooltip content={t.withholdingTaxTooltip}>
+          <h4 className="text-md font-medium text-gray-600 mb-3 cursor-help">{t.withholdingTax}</h4>
+        </Tooltip>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t.dividendWithholding} (%)</label>
+            <Tooltip content={t.dividendWithholdingTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.dividendWithholding} (%)
+              </label>
+            </Tooltip>
             <input
               type="number"
               step="0.1"
               value={inputs.withholdingTax.dividendWithholding}
               onChange={(e) => updateWithholdingTax('dividendWithholding', parseFloat(e.target.value))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="30.0"
             />
           </div>
+          
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t.foreignWithholding} (%)</label>
+            <Tooltip content={t.foreignWithholdingTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.foreignWithholding} (%)
+              </label>
+            </Tooltip>
             <input
               type="number"
               step="0.1"
               value={inputs.withholdingTax.foreignWithholding}
               onChange={(e) => updateWithholdingTax('foreignWithholding', parseFloat(e.target.value))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="15.0"
             />
           </div>
         </div>
-        <div className="mt-3">
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              checked={inputs.withholdingTax.applyToForeign}
-              onChange={(e) => updateWithholdingTax('applyToForeign', e.target.checked)}
-              className="mr-2"
-            />
-            <span className="text-sm text-gray-700">{t.applyToForeign}</span>
-          </label>
+        
+        <div className="mt-4">
+          <Tooltip content={t.applyToForeignTooltip}>
+            <label className="flex items-center cursor-help">
+              <input
+                type="checkbox"
+                checked={inputs.withholdingTax.applyToForeign}
+                onChange={(e) => updateWithholdingTax('applyToForeign', e.target.checked)}
+                className="mr-2"
+              />
+              <span className="text-sm font-medium text-gray-700">{t.applyToForeign}</span>
+            </label>
+          </Tooltip>
         </div>
       </div>
     </div>

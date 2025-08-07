@@ -2,6 +2,9 @@ import React from 'react';
 import { FireInputs } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
 import AdvancedTaxForm from './AdvancedTaxForm';
+import RealEstateForm from './RealEstateForm';
+import RiskHeatmapForm from './RiskHeatmapForm';
+import Tooltip from './Tooltip';
 
 interface InputFormProps {
   inputs: FireInputs;
@@ -30,12 +33,11 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculat
         <h3 className="text-lg font-semibold text-gray-700 mb-4">{t.basicParameters}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label 
-              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
-              title={t.firstYearWithdrawalTooltip}
-            >
-              {t.firstYearWithdrawal}
-            </label>
+            <Tooltip content={t.firstYearWithdrawalTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.firstYearWithdrawal}
+              </label>
+            </Tooltip>
             <input
               type="text"
               value={formatNumber(inputs.withdrawal)}
@@ -46,12 +48,11 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculat
           </div>
           
           <div>
-            <label 
-              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
-              title={t.inflationRateTooltip}
-            >
-              {t.inflationRate}
-            </label>
+            <Tooltip content={t.inflationRateTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.inflationRate}
+              </label>
+            </Tooltip>
             <input
               type="number"
               step="0.1"
@@ -63,12 +64,11 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculat
           </div>
           
           <div>
-            <label 
-              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
-              title={t.yearsTooltip}
-            >
-              {t.years}
-            </label>
+            <Tooltip content={t.yearsTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.years}
+              </label>
+            </Tooltip>
             <input
               type="number"
               value={inputs.years}
@@ -79,12 +79,11 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculat
           </div>
           
           <div>
-            <label 
-              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
-              title={t.dividendYieldTooltip}
-            >
-              {t.dividendYield}
-            </label>
+            <Tooltip content={t.dividendYieldTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.dividendYield}
+              </label>
+            </Tooltip>
             <input
               type="number"
               step="0.1"
@@ -96,12 +95,11 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculat
           </div>
           
           <div>
-            <label 
-              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
-              title={t.priceGrowthTooltip}
-            >
-              {t.priceGrowth}
-            </label>
+            <Tooltip content={t.priceGrowthTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.priceGrowth}
+              </label>
+            </Tooltip>
             <input
               type="number"
               step="0.1"
@@ -113,12 +111,11 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculat
           </div>
           
           <div>
-            <label 
-              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
-              title={t.withdrawalTimingTooltip}
-            >
-              {t.withdrawalTiming}
-            </label>
+            <Tooltip content={t.withdrawalTimingTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.withdrawalTiming}
+              </label>
+            </Tooltip>
             <select
               value={inputs.timing}
               onChange={(e) => onInputChange('timing', e.target.value)}
@@ -137,25 +134,26 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculat
         
         {/* 進階稅務功能開關 */}
         <div className="mb-4">
-          <label className="flex items-center cursor-help" title={t.useAdvancedTaxTooltip}>
-            <input
-              type="checkbox"
-              checked={inputs.useAdvancedTax}
-              onChange={(e) => onInputChange('useAdvancedTax', e.target.checked)}
-              className="mr-2"
-            />
-            <span className="text-sm font-medium text-gray-700">{t.useAdvancedTax}</span>
-          </label>
+          <Tooltip content={t.useAdvancedTaxTooltip}>
+            <label className="flex items-center cursor-help">
+              <input
+                type="checkbox"
+                checked={inputs.useAdvancedTax}
+                onChange={(e) => onInputChange('useAdvancedTax', e.target.checked)}
+                className="mr-2"
+              />
+              <span className="text-sm font-medium text-gray-700">{t.useAdvancedTax}</span>
+            </label>
+          </Tooltip>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label 
-              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
-              title={t.totalFeeRateTooltip}
-            >
-              {t.totalFeeRate}
-            </label>
+            <Tooltip content={t.totalFeeRateTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.totalFeeRate}
+              </label>
+            </Tooltip>
             <input
               type="number"
               step="0.01"
@@ -167,12 +165,11 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculat
           </div>
           
           <div>
-            <label 
-              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
-              title={t.accountTypeTooltip}
-            >
-              {t.accountType}
-            </label>
+            <Tooltip content={t.accountTypeTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.accountType}
+              </label>
+            </Tooltip>
             <select
               value={inputs.accountType}
               onChange={(e) => onInputChange('accountType', e.target.value)}
@@ -185,12 +182,11 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculat
           </div>
           
           <div>
-            <label 
-              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
-              title={t.targetAmountModeTooltip}
-            >
-              {t.targetAmountMode}
-            </label>
+            <Tooltip content={t.targetAmountModeTooltip}>
+              <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                {t.targetAmountMode}
+              </label>
+            </Tooltip>
             <select
               value={inputs.targetMode}
               onChange={(e) => onInputChange('targetMode', e.target.value)}
@@ -204,12 +200,11 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculat
           {inputs.accountType === 'taxable' && (
             <>
               <div>
-                <label 
-                  className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
-                  title={t.dividendTaxRateTooltip}
-                >
-                  {t.dividendTaxRate}
-                </label>
+                <Tooltip content={t.dividendTaxRateTooltip}>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                    {t.dividendTaxRate}
+                  </label>
+                </Tooltip>
                 <input
                   type="number"
                   step="0.1"
@@ -221,12 +216,11 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculat
               </div>
               
               <div>
-                <label 
-                  className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
-                  title={t.capitalGainsTaxRateTooltip}
-                >
-                  {t.capitalGainsTaxRate}
-                </label>
+                <Tooltip content={t.capitalGainsTaxRateTooltip}>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                    {t.capitalGainsTaxRate}
+                  </label>
+                </Tooltip>
                 <input
                   type="number"
                   step="0.1"
@@ -241,12 +235,11 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculat
           
           {inputs.accountType === 'deferred' && (
             <div>
-              <label 
-                className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
-                title={t.withdrawalTaxRateTooltip}
-              >
-                {t.withdrawalTaxRate}
-              </label>
+              <Tooltip content={t.withdrawalTaxRateTooltip}>
+                <label className="block text-sm font-medium text-gray-700 mb-2 cursor-help">
+                  {t.withdrawalTaxRate}
+                </label>
+              </Tooltip>
               <input
                 type="number"
                 step="0.1"
@@ -263,95 +256,75 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculat
       {/* 進階稅務功能 */}
       <AdvancedTaxForm inputs={inputs} onInputChange={onInputChange} />
       
-      {/* v1.5 蒙地卡羅模擬 */}
+
+
+      {/* v2.0 房產模組 */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-700 mb-4">{t.monteCarlo}</h3>
+        <h3 className="text-lg font-semibold text-gray-700 mb-4">{t.realEstateModule}</h3>
         
-        {/* 蒙地卡羅開關 */}
+        {/* 房產開關 */}
         <div className="mb-4">
-          <label className="flex items-center cursor-help" title={t.monteCarloTooltip}>
-            <input
-              type="checkbox"
-              checked={inputs.useMonteCarlo}
-              onChange={(e) => onInputChange('useMonteCarlo', e.target.checked)}
-              className="mr-2"
-            />
-            <span className="text-sm font-medium text-gray-700">{t.monteCarlo}</span>
-          </label>
+          <Tooltip content={t.useRealEstateTooltip}>
+            <label className="flex items-center cursor-help">
+              <input
+                type="checkbox"
+                checked={inputs.useRealEstate}
+                onChange={(e) => onInputChange('useRealEstate', e.target.checked)}
+                className="mr-2"
+              />
+              <span className="text-sm font-medium text-gray-700">{t.useRealEstate}</span>
+            </label>
+          </Tooltip>
         </div>
         
-        {inputs.useMonteCarlo && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label 
-                className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
-                title={t.volatilityTooltip}
-              >
-                {t.volatility} (%)
-              </label>
-              <input
-                type="number"
-                step="0.1"
-                value={inputs.volatility}
-                onChange={(e) => onInputChange('volatility', parseFloat(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="15.0"
-              />
-            </div>
-            
-            <div>
-              <label 
-                className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
-                title={t.simulationsTooltip}
-              >
-                {t.simulations}
-              </label>
-              <input
-                type="number"
-                step="100"
-                value={inputs.simulations}
-                onChange={(e) => onInputChange('simulations', parseInt(e.target.value))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="1000"
-              />
-            </div>
+        {inputs.useRealEstate && (
+          <div className="text-sm text-gray-600">
+            <p>• {t.realEstateInstructions1}</p>
+            <p>• {t.realEstateInstructions2}</p>
+            <p>• {t.realEstateInstructions3}</p>
           </div>
         )}
       </div>
-      
-      {/* 計算按鈕 */}
-      <div className="flex justify-center">
-        <button
-          onClick={onCalculate}
-          disabled={isCalculating}
-          className={`px-8 py-3 rounded-lg font-semibold text-white transition-colors ${
-            isCalculating
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-blue-500 hover:bg-blue-600'
-          }`}
-        >
-          {isCalculating ? (
-            <div className="flex items-center">
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              {inputs.useMonteCarlo ? t.monteCarloCalculating : t.calculating}
-            </div>
-          ) : (
-            inputs.useMonteCarlo ? t.startMonteCarlo : t.calculateResults
-          )}
-        </button>
+
+      {/* 房產表單 */}
+      <RealEstateForm inputs={inputs} onInputChange={onInputChange} />
+
+      {/* v2.0 風險熱圖 */}
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold text-gray-700 mb-4">{t.riskHeatmap}</h3>
+        
+        {/* 風險熱圖開關 */}
+        <div className="mb-4">
+          <Tooltip content={t.useRiskHeatmapTooltip}>
+            <label className="flex items-center cursor-help">
+              <input
+                type="checkbox"
+                checked={inputs.useRiskHeatmap}
+                onChange={(e) => onInputChange('useRiskHeatmap', e.target.checked)}
+                className="mr-2"
+              />
+              <span className="text-sm font-medium text-gray-700">{t.useRiskHeatmap}</span>
+            </label>
+          </Tooltip>
+        </div>
+        
+        {inputs.useRiskHeatmap && (
+          <div className="text-sm text-gray-600">
+            <p>• {t.riskHeatmapDescription}</p>
+            <p>• {t.riskLevelDescription}</p>
+            <p>• {t.realEstateImpactTooltip}</p>
+          </div>
+        )}
       </div>
+
+      {/* Risk Heatmap Form */}
+      <RiskHeatmapForm inputs={inputs} onInputChange={onInputChange} />
       
       {/* 驗證提示 */}
-      <div className="text-sm text-gray-600 mt-4">
+      <div className="text-sm text-gray-600">
         <p>• {t.dividendPlusGrowth}</p>
         <p>• {t.taxRateRange}</p>
         <p>• {t.feeRateRange}</p>
-        {inputs.useMonteCarlo && (
-          <p>• 蒙地卡羅模擬需要手動點擊計算按鈕</p>
-        )}
       </div>
     </div>
   );
