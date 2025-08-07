@@ -86,6 +86,50 @@ export interface Translations {
   language: string;
   switchToEnglish: string;
   switchToChinese: string;
+  
+  // v1.3 Advanced Tax Features
+  advancedTaxFeatures: string;
+  useAdvancedTax: string;
+  useAdvancedTaxTooltip: string;
+  taxBrackets: string;
+  taxBracketsTooltip: string;
+  addTaxBracket: string;
+  removeTaxBracket: string;
+  minIncome: string;
+  maxIncome: string;
+  marginalRate: string;
+  exemptions: string;
+  exemptionsTooltip: string;
+  personalExemption: string;
+  standardDeduction: string;
+  dividendExemption: string;
+  capitalGainsExemption: string;
+  withholdingTax: string;
+  withholdingTaxTooltip: string;
+  dividendWithholding: string;
+  foreignWithholding: string;
+  applyToForeign: string;
+  
+  // v1.4 Comparison and Reports
+  comparisonAndReports: string;
+  accountComparison: string;
+  exportCSV: string;
+  charts: string;
+  assetGrowthChart: string;
+  taxComparisonChart: string;
+  
+  // v1.5 Monte Carlo
+  monteCarlo: string;
+  monteCarloTooltip: string;
+  volatility: string;
+  volatilityTooltip: string;
+  simulations: string;
+  simulationsTooltip: string;
+  bankruptcyProbability: string;
+  successRate: string;
+  worstCase: string;
+  bestCase: string;
+  medianCase: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -175,6 +219,50 @@ export const translations: Record<Language, Translations> = {
     language: '語言',
     switchToEnglish: 'Switch to English',
     switchToChinese: '切換到中文',
+    
+    // v1.3 Advanced Tax Features
+    advancedTaxFeatures: '進階稅務功能',
+    useAdvancedTax: '使用進階稅務計算',
+    useAdvancedTaxTooltip: '啟用進階稅務計算，考慮個人所得稅、股息扣繳稅、外國扣繳稅等',
+    taxBrackets: '稅率級距',
+    taxBracketsTooltip: '自訂個人所得稅的稅率級距',
+    addTaxBracket: '新增稅率級距',
+    removeTaxBracket: '移除稅率級距',
+    minIncome: '最低收入',
+    maxIncome: '最高收入',
+    marginalRate: '邊際稅率',
+    exemptions: '扣除額',
+    exemptionsTooltip: '考慮個人所得稅的標準扣除額、個人免稅額、股息免稅額、資本利得免稅額等',
+    personalExemption: '個人免稅額',
+    standardDeduction: '標準扣除額',
+    dividendExemption: '股息免稅額',
+    capitalGainsExemption: '資本利得免稅額',
+    withholdingTax: '扣繳稅',
+    withholdingTaxTooltip: '考慮股息扣繳稅、外國扣繳稅等',
+    dividendWithholding: '股息扣繳稅',
+    foreignWithholding: '外國扣繳稅',
+    applyToForeign: '適用於外國收入',
+    
+    // v1.4 Comparison and Reports
+    comparisonAndReports: '比較與報表',
+    accountComparison: '帳戶比較',
+    exportCSV: '匯出 CSV',
+    charts: '圖表',
+    assetGrowthChart: '資產成長圖',
+    taxComparisonChart: '稅務比較圖',
+    
+    // v1.5 Monte Carlo
+    monteCarlo: '蒙地卡羅模擬',
+    monteCarloTooltip: '進行蒙地卡羅模擬，評估退休計劃的風險與成功率',
+    volatility: '波動率',
+    volatilityTooltip: '投資組合的預期波動率',
+    simulations: '模擬次數',
+    simulationsTooltip: '模擬次數越多，結果越準確',
+    bankruptcyProbability: '破產機率',
+    successRate: '成功率',
+    worstCase: '最差情況',
+    bestCase: '最佳情況',
+    medianCase: '中位數情況',
   },
   'en-US': {
     // Header
@@ -262,5 +350,49 @@ export const translations: Record<Language, Translations> = {
     language: 'Language',
     switchToEnglish: 'Switch to English',
     switchToChinese: '切換到中文',
+    
+    // v1.3 Advanced Tax Features
+    advancedTaxFeatures: 'Advanced Tax Features',
+    useAdvancedTax: 'Use Advanced Tax Calculation',
+    useAdvancedTaxTooltip: 'Enable advanced tax calculation, considering personal income tax, dividend withholding tax, foreign withholding tax, etc.',
+    taxBrackets: 'Tax Brackets',
+    taxBracketsTooltip: 'Customize tax brackets for personal income tax',
+    addTaxBracket: 'Add Tax Bracket',
+    removeTaxBracket: 'Remove Tax Bracket',
+    minIncome: 'Minimum Income',
+    maxIncome: 'Maximum Income',
+    marginalRate: 'Marginal Rate',
+    exemptions: 'Exemptions',
+    exemptionsTooltip: 'Consider standard deduction, personal exemption, dividend exemption, capital gains exemption, etc. for personal income tax',
+    personalExemption: 'Personal Exemption',
+    standardDeduction: 'Standard Deduction',
+    dividendExemption: 'Dividend Exemption',
+    capitalGainsExemption: 'Capital Gains Exemption',
+    withholdingTax: 'Withholding Tax',
+    withholdingTaxTooltip: 'Consider dividend withholding tax, foreign withholding tax, etc.',
+    dividendWithholding: 'Dividend Withholding',
+    foreignWithholding: 'Foreign Withholding',
+    applyToForeign: 'Apply to Foreign Income',
+    
+    // v1.4 Comparison and Reports
+    comparisonAndReports: 'Comparison and Reports',
+    accountComparison: 'Account Comparison',
+    exportCSV: 'Export CSV',
+    charts: 'Charts',
+    assetGrowthChart: 'Asset Growth Chart',
+    taxComparisonChart: 'Tax Comparison Chart',
+    
+    // v1.5 Monte Carlo
+    monteCarlo: 'Monte Carlo Simulation',
+    monteCarloTooltip: 'Perform Monte Carlo simulation to assess the risk and success rate of the retirement plan',
+    volatility: 'Volatility',
+    volatilityTooltip: 'Expected volatility of the portfolio',
+    simulations: 'Simulations',
+    simulationsTooltip: 'More simulations result in more accurate results',
+    bankruptcyProbability: 'Bankruptcy Probability',
+    successRate: 'Success Rate',
+    worstCase: 'Worst Case',
+    bestCase: 'Best Case',
+    medianCase: 'Median Case',
   },
 }; 

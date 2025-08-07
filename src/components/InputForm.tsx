@@ -1,6 +1,7 @@
 import React from 'react';
 import { FireInputs } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
+import AdvancedTaxForm from './AdvancedTaxForm';
 
 interface InputFormProps {
   inputs: FireInputs;
@@ -131,6 +132,20 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
       {/* 稅與費用 */}
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-700 mb-4">{t.taxesAndFees}</h3>
+        
+        {/* 進階稅務功能開關 */}
+        <div className="mb-4">
+          <label className="flex items-center cursor-help" title={t.useAdvancedTaxTooltip}>
+            <input
+              type="checkbox"
+              checked={inputs.useAdvancedTax}
+              onChange={(e) => onInputChange('useAdvancedTax', e.target.checked)}
+              className="mr-2"
+            />
+            <span className="text-sm font-medium text-gray-700">{t.useAdvancedTax}</span>
+          </label>
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label 
@@ -241,6 +256,65 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
             </div>
           )}
         </div>
+      </div>
+      
+      {/* 進階稅務功能 */}
+      <AdvancedTaxForm inputs={inputs} onInputChange={onInputChange} />
+      
+      {/* v1.5 蒙地卡羅模擬 */}
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold text-gray-700 mb-4">{t.monteCarlo}</h3>
+        
+        {/* 蒙地卡羅開關 */}
+        <div className="mb-4">
+          <label className="flex items-center cursor-help" title={t.monteCarloTooltip}>
+            <input
+              type="checkbox"
+              checked={inputs.useMonteCarlo}
+              onChange={(e) => onInputChange('useMonteCarlo', e.target.checked)}
+              className="mr-2"
+            />
+            <span className="text-sm font-medium text-gray-700">{t.monteCarlo}</span>
+          </label>
+        </div>
+        
+        {inputs.useMonteCarlo && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label 
+                className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
+                title={t.volatilityTooltip}
+              >
+                {t.volatility} (%)
+              </label>
+              <input
+                type="number"
+                step="0.1"
+                value={inputs.volatility}
+                onChange={(e) => onInputChange('volatility', parseFloat(e.target.value))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="15.0"
+              />
+            </div>
+            
+            <div>
+              <label 
+                className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
+                title={t.simulationsTooltip}
+              >
+                {t.simulations}
+              </label>
+              <input
+                type="number"
+                step="100"
+                value={inputs.simulations}
+                onChange={(e) => onInputChange('simulations', parseInt(e.target.value))}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="1000"
+              />
+            </div>
+          </div>
+        )}
       </div>
       
       {/* 驗證提示 */}

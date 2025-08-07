@@ -19,7 +19,34 @@ const defaultInputs: FireInputs = {
   dividendTaxRate: 28.0,
   capitalGainsTaxRate: 15.0,
   withdrawalTaxRate: 20.0,
-  targetMode: 'gross'
+  targetMode: 'gross',
+  
+  // v1.3 高擬真稅制
+  useAdvancedTax: false,
+  taxBrackets: [
+    { minIncome: 0, maxIncome: 540000, rate: 5 },
+    { minIncome: 540000, maxIncome: 1210000, rate: 12 },
+    { minIncome: 1210000, maxIncome: 2420000, rate: 20 },
+    { minIncome: 2420000, maxIncome: 4530000, rate: 30 },
+    { minIncome: 4530000, maxIncome: 10310000, rate: 40 },
+    { minIncome: 10310000, maxIncome: null, rate: 45 }
+  ],
+  exemptions: {
+    personalExemption: 92000,
+    standardDeduction: 124000,
+    dividendExemption: 270000,
+    capitalGainsExemption: 600000
+  },
+  withholdingTax: {
+    dividendWithholding: 30.0,
+    foreignWithholding: 15.0,
+    applyToForeign: false
+  },
+  
+  // v1.5 蒙地卡羅模擬
+  useMonteCarlo: false,
+  volatility: 15.0,
+  simulations: 1000
 };
 
 const AppContent: React.FC = () => {

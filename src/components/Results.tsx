@@ -1,6 +1,9 @@
 import React from 'react';
 import { CalculationResult } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
+import AccountComparison from './AccountComparison';
+import MonteCarloResults from './MonteCarloResults';
+import { exportToCSV, exportSummaryToCSV } from '../utils/exportUtils';
 
 interface ResultsProps {
   result: CalculationResult | null;
@@ -8,7 +11,7 @@ interface ResultsProps {
 }
 
 const Results: React.FC<ResultsProps> = ({ result, error }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   
   const formatCurrency = (value: number): string => {
     const locale = t.language === 'zh-TW' ? 'zh-TW' : 'en-US';
@@ -22,9 +25,17 @@ const Results: React.FC<ResultsProps> = ({ result, error }) => {
     }).format(value);
   };
 
-  // const formatPercentage = (value: number): string => {
-  //   return `${value.toFixed(2)}%`;
-  // };
+  const handleExportCSV = () => {
+    if (result) {
+      exportToCSV(result, language);
+    }
+  };
+
+  const handleExportSummary = () => {
+    if (result) {
+      exportSummaryToCSV(result, language);
+    }
+  };
 
   if (error) {
     return (
@@ -52,9 +63,27 @@ const Results: React.FC<ResultsProps> = ({ result, error }) => {
 
   return (
     <div className="space-y-6">
+      {/* 帳戶比較 */}
+      <AccountComparison result={result} />
+      
+      {/* 蒙地卡羅結果 */}
+      {result.monteCarloResult && (
+        <MonteCarloResults result={result.monteCarloResult} />
+      )}
+      
       {/* 卡片結果 */}
       <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">{t.requiredInitialAssets}</h3>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-xl font-bold text-gray-800">{t.requiredInitialAssets}</h3>
+          <div className="space-x-2">
+            <button
+              onClick={handleExportSummary}
+              className="px-3 py-1 bg-green-500 text-white rounded-md text-sm hover:bg-green-600"
+            >
+              {t.exportCSV}
+            </button>
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-blue-50 p-4 rounded-lg">
             <h4 className="text-sm font-medium text-blue-800 mb-2">{t.generalTaxableAccount}</h4>
@@ -92,7 +121,15 @@ const Results: React.FC<ResultsProps> = ({ result, error }) => {
 
       {/* 年度表 */}
       <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">{t.yearlyCashFlow}</h3>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-xl font-bold text-gray-800">{t.yearlyCashFlow}</h3>
+          <button
+            onClick={handleExportCSV}
+            className="px-3 py-1 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600"
+          >
+            {t.exportCSV}
+          </button>
+        </div>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
