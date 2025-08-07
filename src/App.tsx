@@ -1,8 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import InputForm from './components/InputForm';
 import Results from './components/Results';
+import LanguageSwitcher from './components/LanguageSwitcher';
 import { FireInputs, CalculationResult } from './types';
 import { FireCalculator } from './utils/calculator';
+import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import './App.css';
 
 const defaultInputs: FireInputs = {
@@ -20,7 +22,8 @@ const defaultInputs: FireInputs = {
   targetMode: 'gross'
 };
 
-function App() {
+const AppContent: React.FC = () => {
+  const { t } = useLanguage();
   const [inputs, setInputs] = useState<FireInputs>(defaultInputs);
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -36,10 +39,10 @@ function App() {
       const calculationResult = calculator.calculate();
       setResult(calculationResult);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '計算發生錯誤');
+      setError(err instanceof Error ? err.message : t.genericError);
       setResult(null);
     }
-  }, [inputs]);
+  }, [inputs, t.genericError]);
 
   // 當輸入改變時自動重新計算
   React.useEffect(() => {
@@ -51,10 +54,10 @@ function App() {
       <div className="container mx-auto px-4 py-8">
         <header className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            FIRE 提領計算器
+            {t.title}
           </h1>
           <p className="text-lg text-gray-600">
-            含稅負與費用的財務獨立退休規劃工具
+            {t.subtitle}
           </p>
         </header>
 
@@ -64,12 +67,21 @@ function App() {
         </main>
 
         <footer className="mt-12 text-center text-gray-500 text-sm">
-          <p>
-            本工具僅供參考，不構成投資建議。請諮詢專業財務顧問。
+          <p className="mb-4">
+            {t.disclaimer}
           </p>
+          <LanguageSwitcher />
         </footer>
       </div>
     </div>
+  );
+};
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
 

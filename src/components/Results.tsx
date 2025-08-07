@@ -1,5 +1,6 @@
 import React from 'react';
 import { CalculationResult } from '../types';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface ResultsProps {
   result: CalculationResult | null;
@@ -7,10 +8,15 @@ interface ResultsProps {
 }
 
 const Results: React.FC<ResultsProps> = ({ result, error }) => {
+  const { t } = useLanguage();
+  
   const formatCurrency = (value: number): string => {
-    return new Intl.NumberFormat('zh-TW', {
+    const locale = t.language === 'zh-TW' ? 'zh-TW' : 'en-US';
+    const currency = t.language === 'zh-TW' ? 'TWD' : 'USD';
+    
+    return new Intl.NumberFormat(locale, {
       style: 'currency',
-      currency: 'TWD',
+      currency: currency,
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(value);
@@ -30,7 +36,7 @@ const Results: React.FC<ResultsProps> = ({ result, error }) => {
             </svg>
           </div>
           <div className="ml-3">
-            <h3 className="text-sm font-medium text-red-800">計算錯誤</h3>
+            <h3 className="text-sm font-medium text-red-800">{t.calculationError}</h3>
             <div className="mt-2 text-sm text-red-700">
               <p>{error}</p>
             </div>
@@ -48,18 +54,18 @@ const Results: React.FC<ResultsProps> = ({ result, error }) => {
     <div className="space-y-6">
       {/* 卡片結果 */}
       <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">所需起始資產</h3>
+        <h3 className="text-xl font-bold text-gray-800 mb-4">{t.requiredInitialAssets}</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-blue-50 p-4 rounded-lg">
-            <h4 className="text-sm font-medium text-blue-800 mb-2">一般應稅帳戶</h4>
+            <h4 className="text-sm font-medium text-blue-800 mb-2">{t.generalTaxableAccount}</h4>
             <p className="text-2xl font-bold text-blue-900">{formatCurrency(result.taxableRequired)}</p>
           </div>
           <div className="bg-green-50 p-4 rounded-lg">
-            <h4 className="text-sm font-medium text-green-800 mb-2">延稅帳戶</h4>
+            <h4 className="text-sm font-medium text-green-800 mb-2">{t.taxDeferredAccount}</h4>
             <p className="text-2xl font-bold text-green-900">{formatCurrency(result.deferredRequired)}</p>
           </div>
           <div className="bg-purple-50 p-4 rounded-lg">
-            <h4 className="text-sm font-medium text-purple-800 mb-2">免稅帳戶</h4>
+            <h4 className="text-sm font-medium text-purple-800 mb-2">{t.taxFreeAccount}</h4>
             <p className="text-2xl font-bold text-purple-900">{formatCurrency(result.taxfreeRequired)}</p>
           </div>
         </div>
@@ -67,42 +73,42 @@ const Results: React.FC<ResultsProps> = ({ result, error }) => {
         <div className="mt-4 pt-4 border-t border-gray-200">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h4 className="text-sm font-medium text-gray-700 mb-2">第一年費用</h4>
+              <h4 className="text-sm font-medium text-gray-700 mb-2">{t.firstYearFees}</h4>
               <p className="text-lg font-semibold text-gray-900">{formatCurrency(result.firstYearFees)}</p>
             </div>
             <div>
-              <h4 className="text-sm font-medium text-gray-700 mb-2">第一年稅額</h4>
+              <h4 className="text-sm font-medium text-gray-700 mb-2">{t.firstYearTaxes}</h4>
               <p className="text-lg font-semibold text-gray-900">{formatCurrency(result.firstYearTaxes)}</p>
             </div>
           </div>
         </div>
         
         <div className="mt-4 pt-4 border-t border-gray-200">
-          <h4 className="text-sm font-medium text-gray-700 mb-2">4% 法則對照</h4>
+          <h4 className="text-sm font-medium text-gray-700 mb-2">{t.fourPercentRule}</h4>
           <p className="text-lg font-semibold text-gray-900">{formatCurrency(result.fourPercentRule)}</p>
-          <p className="text-sm text-gray-600 mt-1">（僅供參考，未考慮稅負與費用）</p>
+          <p className="text-sm text-gray-600 mt-1">{t.fourPercentRuleNote}</p>
         </div>
       </div>
 
       {/* 年度表 */}
       <div className="bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">年度現金流表</h3>
+        <h3 className="text-xl font-bold text-gray-800 mb-4">{t.yearlyCashFlow}</h3>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">年</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">期初資產</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">費用</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">股息</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">股息稅</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">價格成長</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">已實現利得</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">資本利得稅</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">提領稅</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">稅前提領</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">稅後到手</th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">期末資產</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.year}</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.beginningBalance}</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.fees}</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.dividends}</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.dividendTax}</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.priceGrowthAmount}</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.realizedGains}</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.capitalGainsTax}</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.withdrawalTax}</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.grossWithdrawal}</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.netWithdrawal}</th>
+                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.endingBalance}</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -126,7 +132,9 @@ const Results: React.FC<ResultsProps> = ({ result, error }) => {
           </table>
         </div>
         {result.yearlyData.length > 10 && (
-          <p className="text-sm text-gray-600 mt-2">顯示前 10 年，共 {result.yearlyData.length} 年</p>
+          <p className="text-sm text-gray-600 mt-2">
+            {t.showingFirst10Years.replace('{total}', result.yearlyData.length.toString())}
+          </p>
         )}
       </div>
     </div>
