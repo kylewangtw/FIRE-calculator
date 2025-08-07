@@ -56,10 +56,6 @@ function App() {
           <p className="text-lg text-gray-600">
             含稅負與費用的財務獨立退休規劃工具
           </p>
-          {/* Tailwind 測試 */}
-          <div className="mt-4 p-4 bg-blue-500 text-white rounded-lg">
-            <p className="text-sm">Tailwind CSS 測試 - 如果你看到藍色背景和白色文字，表示樣式正常載入</p>
-          </div>
         </header>
 
         <main className="max-w-6xl mx-auto">
