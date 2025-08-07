@@ -87,6 +87,13 @@ export interface Translations {
   switchToEnglish: string;
   switchToChinese: string;
   
+  // Calculate Button
+  calculateResults: string;
+  startMonteCarlo: string;
+  calculating: string;
+  monteCarloCalculating: string;
+  calculatingDescription: string;
+  
   // v1.3 Advanced Tax Features
   advancedTaxFeatures: string;
   useAdvancedTax: string;
@@ -220,6 +227,13 @@ export const translations: Record<Language, Translations> = {
     switchToEnglish: 'Switch to English',
     switchToChinese: '切換到中文',
     
+    // Calculate Button
+    calculateResults: '計算結果',
+    startMonteCarlo: '開始蒙地卡羅模擬',
+    calculating: '計算中...',
+    monteCarloCalculating: '蒙地卡羅模擬計算中...',
+    calculatingDescription: '請稍候，系統正在進行複雜的計算。',
+    
     // v1.3 Advanced Tax Features
     advancedTaxFeatures: '進階稅務功能',
     useAdvancedTax: '使用進階稅務計算',
@@ -350,6 +364,13 @@ export const translations: Record<Language, Translations> = {
     language: 'Language',
     switchToEnglish: 'Switch to English',
     switchToChinese: '切換到中文',
+    
+    // Calculate Button
+    calculateResults: 'Calculate Results',
+    startMonteCarlo: 'Start Monte Carlo Simulation',
+    calculating: 'Calculating...',
+    monteCarloCalculating: 'Monte Carlo Simulation Calculating...',
+    calculatingDescription: 'Please wait, the system is performing complex calculations.',
     
     // v1.3 Advanced Tax Features
     advancedTaxFeatures: 'Advanced Tax Features',

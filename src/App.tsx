@@ -54,27 +54,43 @@ const AppContent: React.FC = () => {
   const [inputs, setInputs] = useState<FireInputs>(defaultInputs);
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isCalculating, setIsCalculating] = useState(false);
 
   const handleInputChange = useCallback((field: keyof FireInputs, value: any) => {
     setInputs(prev => ({ ...prev, [field]: value }));
   }, []);
 
-  const calculate = useCallback(() => {
+  const calculate = useCallback(async () => {
     try {
       setError(null);
+      setIsCalculating(true);
+      
+      // 如果是蒙地卡羅模擬，顯示計算中狀態
+      if (inputs.useMonteCarlo) {
+        console.log('開始蒙地卡羅模擬...');
+      }
+      
       const calculator = new FireCalculator(inputs);
       const calculationResult = calculator.calculate();
       setResult(calculationResult);
+      
+      if (inputs.useMonteCarlo) {
+        console.log('蒙地卡羅模擬完成！');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : t.genericError);
       setResult(null);
+    } finally {
+      setIsCalculating(false);
     }
   }, [inputs, t.genericError]);
 
-  // 當輸入改變時自動重新計算
+  // 當基本參數改變時自動重新計算（除非啟用蒙地卡羅）
   React.useEffect(() => {
-    calculate();
-  }, [calculate]);
+    if (!inputs.useMonteCarlo) {
+      calculate();
+    }
+  }, [calculate, inputs.useMonteCarlo]);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -89,8 +105,13 @@ const AppContent: React.FC = () => {
         </header>
 
         <main className="max-w-6xl mx-auto">
-          <InputForm inputs={inputs} onInputChange={handleInputChange} />
-          <Results result={result} error={error} />
+          <InputForm 
+            inputs={inputs} 
+            onInputChange={handleInputChange} 
+            onCalculate={calculate}
+            isCalculating={isCalculating}
+          />
+          <Results result={result} error={error} isCalculating={isCalculating} />
         </main>
 
         <footer className="mt-12 text-center text-gray-500 text-sm">

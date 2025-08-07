@@ -6,9 +6,11 @@ import AdvancedTaxForm from './AdvancedTaxForm';
 interface InputFormProps {
   inputs: FireInputs;
   onInputChange: (field: keyof FireInputs, value: any) => void;
+  onCalculate: () => Promise<void>;
+  isCalculating: boolean;
 }
 
-const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
+const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculate, isCalculating }) => {
   const { t } = useLanguage();
   
   const formatNumber = (value: number): string => {
@@ -317,11 +319,39 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
         )}
       </div>
       
+      {/* 計算按鈕 */}
+      <div className="flex justify-center">
+        <button
+          onClick={onCalculate}
+          disabled={isCalculating}
+          className={`px-8 py-3 rounded-lg font-semibold text-white transition-colors ${
+            isCalculating
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-blue-500 hover:bg-blue-600'
+          }`}
+        >
+          {isCalculating ? (
+            <div className="flex items-center">
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              {inputs.useMonteCarlo ? t.monteCarloCalculating : t.calculating}
+            </div>
+          ) : (
+            inputs.useMonteCarlo ? t.startMonteCarlo : t.calculateResults
+          )}
+        </button>
+      </div>
+      
       {/* 驗證提示 */}
-      <div className="text-sm text-gray-600">
+      <div className="text-sm text-gray-600 mt-4">
         <p>• {t.dividendPlusGrowth}</p>
         <p>• {t.taxRateRange}</p>
         <p>• {t.feeRateRange}</p>
+        {inputs.useMonteCarlo && (
+          <p>• 蒙地卡羅模擬需要手動點擊計算按鈕</p>
+        )}
       </div>
     </div>
   );
