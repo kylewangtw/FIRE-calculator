@@ -24,7 +24,10 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
         <h3 className="text-lg font-semibold text-gray-700 mb-4">基本參數</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label 
+              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
+              title="第一年度從投資組合中提領的金額，會根據通膨率逐年調整"
+            >
               第一年度目標提領 (元)
             </label>
             <input
@@ -37,7 +40,10 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label 
+              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
+              title="年度通貨膨脹率，用於調整未來年度的提領金額"
+            >
               通膨率 (%)
             </label>
             <input
@@ -51,7 +57,10 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label 
+              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
+              title="規劃的退休年期，從開始提領到結束的總年數"
+            >
               年期
             </label>
             <input
@@ -64,7 +73,10 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label 
+              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
+              title="投資組合的年度股息和利息收入佔總資產的百分比"
+            >
               股息殖利率 (%)
             </label>
             <input
@@ -78,7 +90,10 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label 
+              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
+              title="投資組合的年度價格成長率，不包括股息收入"
+            >
               價格成長率 (%)
             </label>
             <input
@@ -92,7 +107,10 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label 
+              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
+              title="每年提領的時點，期初提領會影響年度投資報酬"
+            >
               提領時點
             </label>
             <select
@@ -112,7 +130,10 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
         <h3 className="text-lg font-semibold text-gray-700 mb-4">稅與費用</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label 
+              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
+              title="年度總費用率，包括基金費用、顧問費用等，對資產年收"
+            >
               總費用率 (%)
             </label>
             <input
@@ -126,7 +147,10 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label 
+              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
+              title="選擇帳戶的稅務類型，影響稅負計算方式"
+            >
               帳戶型態
             </label>
             <select
@@ -141,7 +165,10 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label 
+              className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
+              title="選擇目標金額是稅前提領還是稅後到手金額"
+            >
               目標金額模式
             </label>
             <select
@@ -157,7 +184,10 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
           {inputs.accountType === 'taxable' && (
             <>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
+                  title="股息和利息收入的稅率，適用於一般應稅帳戶"
+                >
                   股息利息稅率 (%)
                 </label>
                 <input
@@ -171,7 +201,10 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label 
+                  className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
+                  title="資本利得稅率，僅在賣出資產實現利得時課徵"
+                >
                   資本利得稅率 (%)
                 </label>
                 <input
@@ -188,7 +221,10 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange }) => {
           
           {inputs.accountType === 'deferred' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label 
+                className="block text-sm font-medium text-gray-700 mb-2 cursor-help"
+                title="延稅帳戶提領時的稅率，如傳統退休帳戶"
+              >
                 提領稅率 (%)
               </label>
               <input
