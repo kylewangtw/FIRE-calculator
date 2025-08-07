@@ -13,7 +13,7 @@
 
 ## 🚀 線上使用
 
-訪問 [FIRE 提領計算器](https://kylewang.github.io/FIRE-calculator)
+訪問 [FIRE 提領計算器](https://kylewangtw.github.io/FIRE-calculator)
 
 ## 📊 主要功能
 
