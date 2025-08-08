@@ -200,7 +200,7 @@ const MonteCarloSimulation: React.FC<MonteCarloSimulationProps> = ({ onResultCha
         <div>
           <div className="flex items-center mb-2">
             <label className="block text-sm font-medium text-gray-700">
-              {t.withdrawalRate} (%)
+              {t.withdrawalRate}
             </label>
             <Tooltip content={t.withdrawalRateTooltip}>
               <span className="ml-1 text-gray-400 cursor-help">?</span>
@@ -220,7 +220,7 @@ const MonteCarloSimulation: React.FC<MonteCarloSimulationProps> = ({ onResultCha
         <div>
           <div className="flex items-center mb-2">
             <label className="block text-sm font-medium text-gray-700">
-              {t.stockAllocation} (%)
+              {t.stockAllocation}
             </label>
             <Tooltip content={t.stockAllocationTooltip}>
               <span className="ml-1 text-gray-400 cursor-help">?</span>
@@ -243,7 +243,7 @@ const MonteCarloSimulation: React.FC<MonteCarloSimulationProps> = ({ onResultCha
         <div>
           <div className="flex items-center mb-2">
             <label className="block text-sm font-medium text-gray-700">
-              {t.stockReturn} (%)
+              {t.stockReturn}
             </label>
             <Tooltip content={t.stockReturnTooltip}>
               <span className="ml-1 text-gray-400 cursor-help">?</span>
@@ -261,7 +261,7 @@ const MonteCarloSimulation: React.FC<MonteCarloSimulationProps> = ({ onResultCha
         <div>
           <div className="flex items-center mb-2">
             <label className="block text-sm font-medium text-gray-700">
-              {t.stockVolatility} (%)
+              {t.stockVolatility}
             </label>
             <Tooltip content={t.stockVolatilityTooltip}>
               <span className="ml-1 text-gray-400 cursor-help">?</span>
@@ -279,7 +279,7 @@ const MonteCarloSimulation: React.FC<MonteCarloSimulationProps> = ({ onResultCha
         <div>
           <div className="flex items-center mb-2">
             <label className="block text-sm font-medium text-gray-700">
-              {t.bondReturn} (%)
+              {t.bondReturn}
             </label>
             <Tooltip content={t.bondReturnTooltip}>
               <span className="ml-1 text-gray-400 cursor-help">?</span>
@@ -297,7 +297,7 @@ const MonteCarloSimulation: React.FC<MonteCarloSimulationProps> = ({ onResultCha
         <div>
           <div className="flex items-center mb-2">
             <label className="block text-sm font-medium text-gray-700">
-              {t.bondVolatility} (%)
+              {t.bondVolatility}
             </label>
             <Tooltip content={t.bondVolatilityTooltip}>
               <span className="ml-1 text-gray-400 cursor-help">?</span>
@@ -315,7 +315,7 @@ const MonteCarloSimulation: React.FC<MonteCarloSimulationProps> = ({ onResultCha
         <div>
           <div className="flex items-center mb-2">
             <label className="block text-sm font-medium text-gray-700">
-              {t.propertyReturn} (%)
+              {t.propertyReturn}
             </label>
             <Tooltip content={t.propertyReturnTooltip}>
               <span className="ml-1 text-gray-400 cursor-help">?</span>
@@ -333,7 +333,7 @@ const MonteCarloSimulation: React.FC<MonteCarloSimulationProps> = ({ onResultCha
         <div>
           <div className="flex items-center mb-2">
             <label className="block text-sm font-medium text-gray-700">
-              {t.propertyVolatility} (%)
+              {t.propertyVolatility}
             </label>
             <Tooltip content={t.propertyVolatilityTooltip}>
               <span className="ml-1 text-gray-400 cursor-help">?</span>
