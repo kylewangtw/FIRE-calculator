@@ -257,6 +257,38 @@ export interface Translations {
   bankruptcyRateLabel: string;
   propertyReturn: string;
   propertyReturnTooltip: string;
+
+  // v3.0 Snapshot & Dashboard
+  currentSnapshot: string;
+  totalAssets: string;
+  totalLiabilities: string;
+  annualSavings: string;
+  netWorth: string;
+  fireAchievement: string;
+  gapToTarget: string;
+  estYearsToFire: string;
+  withdrawalSafety: string;
+  safetyHigh: string;
+  safetyOk: string;
+  safetyLow: string;
+  stepGoal: string;
+  stepSnapshot: string;
+  stepResult: string;
+  tuneParameters: string;
+  liveUpdating: string;
+  editGoal: string;
+  editSnapshot: string;
+  viewFullAnalysis: string;
+  nextEnterSnapshot: string;
+  viewMyFireResult: string;
+  yourRetirementGoal: string;
+  yourFinancialStatus: string;
+  netWorthNote: string;
+  advancedOptions: string;
+  taxAndFees: string;
+  expandSection: string;
+  collapseSection: string;
+  collapseAll: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -515,6 +547,38 @@ export const translations: Record<Language, Translations> = {
     propertyReturn: '房產報酬率 (%)',
     propertyReturnTooltip: '房產的年度期望報酬率',
     detailedInformation: '詳細資訊',
+
+    // v3.0 Snapshot & Dashboard
+    currentSnapshot: '現況快照',
+    totalAssets: '目前總資產',
+    totalLiabilities: '總負債',
+    annualSavings: '每年儲蓄',
+    netWorth: '目前淨資產',
+    fireAchievement: 'FIRE 達成率',
+    gapToTarget: '距離目標',
+    estYearsToFire: '預估達成年數',
+    withdrawalSafety: '提領率安全性',
+    safetyHigh: '偏高',
+    safetyOk: '注意',
+    safetyLow: '安全',
+    stepGoal: '設定目標',
+    stepSnapshot: '輸入現況',
+    stepResult: '看結果',
+    tuneParameters: '微調參數',
+    liveUpdating: '結果即時更新',
+    editGoal: '編輯目標',
+    editSnapshot: '編輯現況',
+    viewFullAnalysis: '查看完整分析',
+    nextEnterSnapshot: '下一步：輸入現況',
+    viewMyFireResult: '查看我的 FIRE 結果',
+    yourRetirementGoal: '你的退休目標',
+    yourFinancialStatus: '你目前的財務現況',
+    netWorthNote: '總資產 − 負債',
+    advancedOptions: '進階選項（可略過）',
+    taxAndFees: '稅務與費用',
+    expandSection: '展開',
+    collapseSection: '收合',
+    collapseAll: '收合',
   },
   'en-US': {
     // Header
@@ -771,5 +835,37 @@ export const translations: Record<Language, Translations> = {
     propertyReturn: 'Property Return (%)',
     propertyReturnTooltip: 'Annual expected return of property',
     detailedInformation: 'Detailed Information',
+
+    // v3.0 Snapshot & Dashboard
+    currentSnapshot: 'Current Snapshot',
+    totalAssets: 'Total Assets',
+    totalLiabilities: 'Total Liabilities',
+    annualSavings: 'Annual Savings',
+    netWorth: 'Net Worth',
+    fireAchievement: 'FIRE Achievement',
+    gapToTarget: 'Gap to Target',
+    estYearsToFire: 'Est. Years to FIRE',
+    withdrawalSafety: 'Withdrawal-Rate Safety',
+    safetyHigh: 'High',
+    safetyOk: 'Caution',
+    safetyLow: 'Safe',
+    stepGoal: 'Goal',
+    stepSnapshot: 'Snapshot',
+    stepResult: 'Result',
+    tuneParameters: 'Tune Parameters',
+    liveUpdating: 'Live updating',
+    editGoal: 'Edit Goal',
+    editSnapshot: 'Edit Snapshot',
+    viewFullAnalysis: 'View Full Analysis',
+    nextEnterSnapshot: 'Next: Enter Snapshot',
+    viewMyFireResult: 'See My FIRE Result',
+    yourRetirementGoal: 'Your Retirement Goal',
+    yourFinancialStatus: 'Your Current Financial Status',
+    netWorthNote: 'Total Assets − Liabilities',
+    advancedOptions: 'Advanced Options (Optional)',
+    taxAndFees: 'Tax & Fees',
+    expandSection: 'Expand',
+    collapseSection: 'Collapse',
+    collapseAll: 'Collapse',
   },
 }; 

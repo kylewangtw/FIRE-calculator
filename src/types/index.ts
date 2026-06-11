@@ -1,3 +1,9 @@
+export interface SnapshotInputs {
+  totalAssets: number;
+  totalLiabilities: number;
+  annualSavings: number;
+}
+
 export interface FireInputs {
   // 基本參數
   withdrawal: number; // 第一年度目標提領
