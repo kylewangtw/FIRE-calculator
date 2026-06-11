@@ -91,7 +91,7 @@ const InputForm: React.FC<InputFormProps> = ({ inputs, onInputChange, onCalculat
               inputMode="numeric"
               value={formatNumber(inputs.withdrawal)}
               onChange={(e) => onInputChange('withdrawal', parseNumber(e.target.value))}
-              className={`${inputClass} pl-9 pr-10`}
+              className={`${inputClass} pl-12 pr-10`}
               placeholder={language === 'zh-TW' ? '1,500,000' : '50,000'}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[12px] text-slate-400">

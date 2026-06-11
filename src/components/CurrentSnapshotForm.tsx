@@ -24,12 +24,12 @@ const CurrentSnapshotForm: React.FC<CurrentSnapshotFormProps> = ({
   const formatNumber = (value: number): string =>
     value === 0 ? '' : value.toLocaleString(language === 'zh-TW' ? 'zh-TW' : 'en-US');
 
-  const placeholder = language === 'zh-TW' ? '例：26,100,000' : 'e.g. 800,000';
-  const savingsPlaceholder = language === 'zh-TW' ? '例：1,000,000' : 'e.g. 30,000';
+  const placeholder = language === 'zh-TW' ? '26,100,000' : '800,000';
+  const savingsPlaceholder = language === 'zh-TW' ? '1,000,000' : '30,000';
   const currencyPrefix = language === 'zh-TW' ? 'NT$' : '$';
 
   const inputClass =
-    'w-full px-3 py-2.5 border border-slate-300 rounded-[10px] text-[15px] font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500';
+    'w-full px-3 py-2.5 border border-slate-300 rounded-[10px] text-[15px] font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-12';
   const labelClass = 'block text-[12px] font-semibold text-slate-600 mb-1.5';
 
   return (
@@ -58,7 +58,7 @@ const CurrentSnapshotForm: React.FC<CurrentSnapshotFormProps> = ({
               inputMode="numeric"
               value={formatNumber(snapshot.totalAssets)}
               onChange={(e) => onSnapshotChange('totalAssets', parseNumber(e.target.value))}
-              className={`${inputClass} pl-8`}
+              className={inputClass}
               placeholder={placeholder}
             />
           </div>
@@ -76,8 +76,8 @@ const CurrentSnapshotForm: React.FC<CurrentSnapshotFormProps> = ({
               inputMode="numeric"
               value={formatNumber(snapshot.totalLiabilities)}
               onChange={(e) => onSnapshotChange('totalLiabilities', parseNumber(e.target.value))}
-              className={`${inputClass} pl-8`}
-              placeholder={language === 'zh-TW' ? '例：0' : 'e.g. 0'}
+              className={inputClass}
+              placeholder={language === 'zh-TW' ? '0' : '0'}
             />
           </div>
         </div>
@@ -99,7 +99,7 @@ const CurrentSnapshotForm: React.FC<CurrentSnapshotFormProps> = ({
               inputMode="numeric"
               value={formatNumber(snapshot.annualSavings)}
               onChange={(e) => onSnapshotChange('annualSavings', parseNumber(e.target.value))}
-              className={`${inputClass} pl-8`}
+              className={inputClass}
               placeholder={savingsPlaceholder}
             />
           </div>
